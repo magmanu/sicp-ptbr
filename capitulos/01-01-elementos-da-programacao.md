@@ -1,86 +1,91 @@
 # 1.1 Os Elementos da Programação
 
-Uma linguagem de programaçãoo poderosa é mais do que um simples meio de instruir um computador a realizar tarefas. A linguagem também serve como o enquadramento pelo qual organizamos nossas ideias sobre os processos. Assim, quando descrevemos uma linguagem, deveríamos prestar atenção especialmente às formas que a linguagem oferece de combinar ideias simples para formar ideias mais complexas. Toda linguagem poderosa tem três mecanismos para isso:
+> ## Conceitos e glossário deste capítulo
+> 
+> - número inteiro: números sem vírgula, sem parte decimal. Ex.: 2
+> - número real: números com vírgula, fracionários. Ex.: 5,7
+> - aritmética: operações como soma, subtração, multiplicação etc.
+> - primitivo: inicial, o primeiro a existir
+> - abstração: ato de identificar apenas as qualidades relevantes de algo tendo em consideração o contexto. Por exemplo, quando dizemos "lavei a louça antes de ligar a televisão" estamos fazendo uma abstração, porque os detalhes da lavagem não são o ponto mais relevante da conversa. Se não abstraíssemos, teríamos que dizer "liguei a torneira, molhei a esponja, passei a esponja no sabão, esfreguei a esponja dos dois lados do primeiro prato, esfreguei a esponja dos dois lados do segundo prato (etc., etc.) antes de ligar a televisão."
+> - truncamento: limitação do número de dígitos à direita da vírgula
+> - dados simples: dados fornecidos explicitamente. Ex.: Você digita "2".
+> - dados compostos: dados que são resultado de alguma operação. Ex.: O computador obtém o número 2 após fazer o cálculo de "5 - 2 - 1".
+> - interpretador: programa que traduz o código de programação acessível a humanos em código de máquina, sem criar um arquivo executável do programa traduzido.
 
-- **expressões primitivas**, que representam as entidades mais simples da linguagem em questão,
-- **meios de combinação**, que criam elementos compostos a partir de elementos mais simples,
-- **meios de abstração**, que dão nome a elementos compostos e os tratam como unidades.
 
-Em programação, lidamos com dois tipos de elementos: procedimentos e dados (mais tarde descobriremos que eles não são tão diferentes assim). Informalmente, dados são “coisas” que queremos manipular; procedimentos são descrições das regras que manipulam os dados. Assim, qualquer linguagem de programação poderosa deveria conseguir descrever dados primitivos e procedimentos primitivos, e deriam fornecer métodos para combinar e abstrair processos e dados.
+Uma linguagem de programação é mais do que uma maneira de dar intruções a um computador. A própria linguagem determina como pensamos os processos. Assim, quando falamos de uma linguagem, temos que prestar atenção à forma com que essa linguagem combina ideias simples para formar ideias mais complexas. Toda linguagem poderosa usa três mecanismos para isso:
 
-Neste capítulo, vamos lidar apenas com dados numéricos simples para nos focarmos nas regras que constroem os procedimentos.^[Chamar números de “dados simples” é um bluff descarado. Na verdade, a forma de lidar com números é um dos aspectos mais difíceis e confusos em qualquer linguagem de programação. Alguns dos problemas típicos são: alguns sistemas de computador fazem distinção entre *números inteiros*, como 2, e *números reais*, como  2,71. O número real 2,00 é diferente do número inteiro 2? As operações aritiméticas usadas em números inteiros são iguais às operações usadas em números reais? A divisão de 6 por 2 resulta em 3 ou em 3,0? Quão grandes podem ser os números representados? Com quantas casas decimais de precisão podemos representar os números? O intervalo de números inteiros é o mesmo que o intervalo de números reais? Além de todas essas questões, claro, há um conjunto de problemas relacionados a erros de truncamento e arredondamento — toda a ciência de análise numérica. Como o foco deste livro é o design de programas de larga escala, e não técnicas numéricas, vamos ignorar esses problemas. Os exemplos numéricos neste capítulo seguirão o comportamento normal de arredondamento usado em operações aritiméticas que mantêm um número limitado de casas decimais de precisão em operações de números não naturais.] Em capítulos posteriores, veremos que essas mesmas regras nos permitem construir procedimentos para manipular dados compostos também.
+- **expressões primitivas**: como elementos mais simples são representados
+- **meios de combinação**: como elementos compostos são criados a partir de elementos mais simples
+- **meios de abstração**: como atribuir nomes a elementos compostos e tratá-los como uma unidade.
+
+Na programação, há dois tipos de elementos: procedimentos e dados (mais tarde descobriremos que eles não são assim tão diferentes). De maneira informal, podemos dizer que dados são as “coisas” que queremos manipular e que um procedimento é a maneira de manipular os dados. Assim, qualquer linguagem de programação poderosa usa dados primitivos e procedimentos primitivos, e oferece maneiras de combinar e abstrair processos e dados.
+
+Neste capítulo, vamos usar exemplos simples da matemática para mostrar como os procedimentos (ou seja, as regras para manipular os dados) são construídos.^[Aliás, dizer que números são “dados simples” é um bluff descarado. Na verdade, lidar com números é um dos aspectos mais difíceis e confusos em qualquer linguagem de programação. Alguns dos problemas comuns são: alguns sistemas respeitam a diferença entre *números inteiros*, como 2, e *números reais*, como 2,71. O número real 2,00 é diferente do número inteiro 2? As operações aritméticas usadas em números inteiros são iguais às operações usadas em números reais? A divisão de 6 por 2 resulta em 3 ou em 3,0? Quão grandes podem ser os números representados? Qual precisão decimal usamos para representar os números? O intervalo de números inteiros é o mesmo que o intervalo de números reais? Além de todas essas questões, claro, há todo um conjunto de problemas relacionados a erros de truncamento e arredondamento — toda a ciência de análise numérica. Como o foco deste livro é o design de programas de larga escala, e não técnicas numéricas, vamos ignorar esses problemas. Os exemplos numéricos neste capítulo seguirão o comportamento normal de arredondamento usado em operações aritméticas que mantêm um número limitado de casas decimais de precisão em operações de números não naturais.] Em capítulos posteriores, veremos que essas mesmas regras nos permitem construir procedimentos para manipular dados compostos também.
 
 ## 1.1.1 Expressões
 
-Uma maneira fácil de começar a programar é examinar algumas interações típicas com um interpretador do dialeto Scheme do Lisp. Imagine que você está em frente ao terminal de um computador. Você digita uma *expressão* e o interpretador responde, exibindo o resultado da *avaliação* daquela expressão.
+Uma maneira fácil de começar a programar é analisar um interpretador de Scheme(Lisp). Imagine que você tem o terminal do computador aberto. Você digita uma *expressão* e o interpretador responde, exibindo o resultado da *avaliação* daquela expressão.
 
-Um tipo de expressão primitiva que você pode digitar é um número (mais precisamente, a expressão que você digita consiste em numerais que representam números decimais). Se você der ao Lisp o número
+Um número é uma expressão primitiva que você pode digitar (mas na verdade, essa expressão que você digita é um numeral que representa um número decimal). Se você der ao Lisp o número
 
 ``` {.scheme}
 486
 ```
 
-o interpretador responderá exibindo^[Ao longo deste livro, fazemos a distinção entre o input humano e a resposta do interpretador mostrando a esta última em itálico.]
+o interpretador responderá exibindo^[Ao longo deste livro, mostramos a diferença entre o _input_ humano e a resposta do interpretador mostrando a resposta do interpretador em itálico.]
 
 *486*
 
-Expressões que representam números podem ser combinadas com expressões que representam um procedimento primitivo (por examplo, `+` ou `*`) para formar uma expressão composta que representa a aplicação de tal procedimento a esses números. Por exemplo:
+Expressões que representam números podem ser combinadas com expressões que representam um procedimento primitivo (por exemplo, `+` ou `*`). Esse processo gera uma expressão composta. Assim, essa expresão composta significa que um procedimento (como a soma, por exemplo) foi aplicada aos números. Por exemplo:
 
 ``` {.scheme}
 (+ 137 349)
 ```
-
-_486*
+*486*
 
 ``` {.scheme}
 (- 1000 334)
 ```
-
-_666*
+*666*
 
 ``` {.scheme}
 (* 5 99)
 ```
-
-_495*
+*495*
 
 ``` {.scheme}
 (/ 10 5)
 ```
-
-_2*
+*2*
 
 ``` {.scheme}
 (+ 2.7 10)
 ```
+*12.7*
 
-_12.7*
+Expressões como essas, formadas ao colocar uma lista de expressões entre parênteses para significar que um procedimento foi aplicado, são chamadas de *combinações*. O elemento mais à esquerda é o *operador*, e os outros elementos são os *operandos*. O valor de uma combinação é obtida quando um procedimento determinado pelo operador é aplicado aos *argumentos*, que são os valores dos operandos.
 
-Expressões como essas, formadas ao delimitar uma lista de expressões entre parênteses para significar a aplicação de um procedimento, são chamadas de *combinações*. O elemento mais à esquerda é o *operador*, e os outros elementos são os *operandos*. O valor de uma combinação é obtida ao se aplicar o procedimento determinado pelo operador aos *argumentos*, que são os valores dos operandos.
-
-A convenção de posicionar o operador à esquerda dos operandos é conhecida como *notação de prefixo*, e pode ser um pouco confuso no começo porque é significativamente diferente da convenção matemática convencional. Porém, a notação de prefixo traz várias vantagens. Uma delas é que ela pode acomodar procedimentos que recebem um número arbitrário de argumentos, como nos examplos a seguir:
+Chama-se *notação de prefixo* a convenção de colocar o operador à esquerda dos operandos, e pode ser um pouco confusa no começo porque é bem diferente da convenção matemática que usamos normalmente. Porém, a notação de prefixo traz várias vantagens. Uma delas é que essa notação permite que os procedimentos recebam qualquer quantidade de argumentos, como nos examplos a seguir:
 
 ``` {.scheme}
 (+ 21 35 12 7)
 ```
-
-_75*
+*75*
 
 ``` {.scheme}
 (* 25 4 12)
 ```
+*1200*
 
-_1200*
+Não há margem para ambiguidade porque o operador está sempre mais à esquerda e toda a combinação está entre parênteses.
 
-Não há margem para ambiguidade porque o operador está sempre mais à esquerda e toda a combinação está contida entre parênteses.
-
-Outra vantagem da notação de prefixo é que ela pode ser ampliada de forma clara para permitir que as combições sejam *aninhadas*, ou seja, as próprias combinações podem ter elementos que sejam outras combinações:
+Outra vantagem da notação de prefixo é que ela pode ser claramente extendida usar *aninhamento*, ou seja, as próprias combinações podem ter elementos que são em si outras combinações:
 
 ``` {.scheme}
 (+ (* 3 5) (- 10 6))
 ```
-
-_19*
+*19*
 
 Em princípio, não há limite para o nível de aninhamento nem para a complexidade geral das expressões que o interpretador do Lisp avalia. Somos nós, humanos, que ficamos confusos com expressões ainda relativamente simples, como
 
@@ -98,33 +103,31 @@ que o interpretador rapidamente avaliaria como 57. Para facilitar a nossa vida, 
       6))
 ```
 
-seguindo uma conveção de formatação chamada *pretty-printing*, em que cada combinação longa alinha os operandos verticalmente. O recuo resultante mostra claramente a estrutura da expressão.^[Sistemas Lisp tipicamente oferecem recursos para ajudar na formatação de expressões. Dois recursos especialmente úteis são o recuo automático que exibe a posição em *pretty-printing* quando uma nova linha é criada e o recurso que destaca o parêntese esquerdo correspondente sempre que um parêntese é digitado.]
+seguindo uma conveção de formatação chamada *pretty-printing*. No *pretty-printing*, cada combinação longa alinha os operandos verticalmente. O espaçamento mostra claramente a estrutura da expressão.^[Sistemas Lisp tipicamente oferecem recursos para ajudar na formatação de expressões. Dois recursos especialmente úteis são o espaçamento automático que exibe a posição em *pretty-printing* assim que uma nova linha é criada e o recurso que destaca o parêntese esquerdo correspondente sempre que um parêntese é digitado.]
 
-Mesmo em expressões complexas, o interpretador sempre opera o mesmo ciclo básico: lê a expressão do terminal, avalia a expressão e exibe o resultado. Geralmente se diz, nesse modo de operação, que o interpretador é executado como *read-eval-print loop* (*loop* ler-avaliar-exibir, também conhecido como REPL). Observe em particular que não é necessário instruir o interpretador explicitamente a exibir o valor da expressão.^[O Lisp segue a convenção de que toda expressão tem um valor. Esta convenção, juntamente com a velha reputação do Lisp como uma linguagem ineficiente, é o motivo pelo qual Alan Perlis (parafraseando Oscar Wilde) fez a provocação “programadores de Lisp sabem o valor de tudo mas não sabem o preço de nada”.]
+Mesmo em expressões complexas, o interpretador sempre opera o mesmo ciclo básico: lê a expressão do terminal, avalia a expressão e exibe o resultado. Nesse modo de operação, geralmente se diz que o interpretador é executado como *read-eval-print loop* (ciclo ler-avaliar-exibir, também conhecido como REPL). Observe em particular que não é necessário pedir explicitamente ao interpretador para mostrar o valor da expressão.^[O Lisp segue a convenção de que toda expressão tem um valor. Essa convenção, juntamente com a velha reputação do Lisp como uma linguagem ineficiente, é o motivo pelo qual Alan Perlis (parafraseando Oscar Wilde) fez a provocação “programadores de Lisp sabem o valor de tudo mas não sabem o preço de nada”.]
 
 ## 1.1.2 Nomes e o Ambiente
 
-Um aspecto crítico da uma linguagem de programação são as formas de usar nomes para nos referimos a objetos computacionais. Dizemos que o nome identifica a *variável* cujo *valor* é o objeto.
+Um aspecto crítico de uma linguagem de programação são as formas de usar nomes para nos referimos a objetos computacionais. Dizemos que o nome identifica a *variável* cujo *valor* é o objeto.
 
-No dialeto Scheme do Lisp, damos nome às coisas usando o termo `define`. Quando digitamos
+No Scheme, damos nome às coisas usando o termo `define`. Quando digitamos
 
 ``` {.scheme}
 (define tamanho 2)
 ```
 
-fazemos com que o interpretador associe o valor 2 ao nome `tamanho`.^[Neste livro, não mostraremos a resposta do interpretador à avaliação de definições, já que depende muito da implementação.] Depois que o nome `tamanho` é associado ao número 2, podemos então nos referir ao valor 2 pelo nome:
+estamos dizendo ao interpretador "associe o valor 2 ao nome `tamanho`".^[Neste livro, não mostraremos a resposta do interpretador à avaliação de definições, já que depende muito da implementação.] Depois que o nome `tamanho` é associado ao número 2, podemos então nos referir ao valor 2 pelo nome:
 
 ``` {.scheme}
 tamanho
 ```
-
-_2*
+*2*
 
 ``` {.scheme}
 (* 5 tamanho)
 ```
-
-_10*
+*10*
 
 Veja abaixo outros exemplos do uso de `define`:
 
@@ -134,61 +137,59 @@ Veja abaixo outros exemplos do uso de `define`:
 
 (* pi (* raio raio))
 ```
-
-_314.159*
+*314.159*
 
 ``` {.scheme}
 (define circunferência (* 2 pi raio))
 
 circunferência
 ```
+*62.8318*
 
-_62.8318*
+`Define` é a forma de abstração mais simples da nossa linguagem, porque com ela, podemos usar nomes simples para nos referirmos ao resultado de operações compostas, como no exemplo da `circunferência` computada acima. No geral, objetos computacionais podem ter estruturas muito complexas, e seria extremamente inconveniente ter que lembrar e repetir os detalhes toda vez. De fato, programas complexos são construídos quando criamos, passo a passo, objetos computacionais cada vez mais complexos. O interpretador é bastante conveniente quando construímos esse passo-a-passo do programa, porque podemos associar nomes a objetos aos poucos, em ciclos sucessivos. Essa característica incentiva que tanto o desenvolvimento quanto o teste de programas seja incrmental, e é uma das principais responsáveis por programas Lisp geralmente serem formados por muitos de procedimentos relativamente simples.
 
-`Define` é a forma de abstração mais simples da nossa linguagem, porque nos permite usar nomes simples para nos referirmos aos resultados de operações compostas, como a `circunferência` computada acima. No geral, objetos computacionais podem ter estruturas muito complexas, e seria extremamente inconveniente ter que lembrar e repetir os detalhes cada vez que os usássemos. De fato, programas complexos são construídos quando criamos, passo a passo, objetos computacionais cada vez mais complexos. O interpretador é bastante conveniente na construção do passo-a-passo do programa porque as associações nome-objeto podem ser criadas de forma incremental em iterações sucessivas. Essa característica encoraja o desenvolvimento e o teste incrementais de programas e é em grande parte responsável pelo fato de que um programa Lisp geralmente é formado por um grande número de procedimentos relativamente simples.
-
-Deveria estar claro que a possibilidade de associar valores a símbolos e depois recuperá-los significa que o interpretdor deve manter alguma tipo de memória que rastreia os pares nome-objeto. Essa memória é chamada de  *ambiente* (mais precisamente, o *ambiente global*, já que veremos mais tarde que uma computação pode envolver diversos ambientes).^[No [capítulo 3](03-00-modularidade-objetos-estado.md) mostraremos que esta notação de ambiente é crucial, tanto para compreender como o interpretador funciona quanto para implementar interpretadores.]
+Deveria estar claro que a possibilidade de associar valores a símbolos e depois recuperá-los significa que o interpretador deve manter algum tipo de memória que rastreia os nomes e os objetos associados a eles. Essa memória é chamada de  *ambiente* (mais precisamente, o *ambiente global*, já que veremos mais tarde que uma computação pode envolver diversos ambientes).^[No [capítulo 3](03-00-modularidade-objetos-estado.md) mostraremos que esta notação de ambiente é crucial, tanto para compreender como o interpretador funciona quanto para implementar interpretadores.]
 
 ## 1.1.3 Avaliação de Combinações
 
-Um dos nossos objetivos neste capítulo é isolar problemas sobre o pensamento procedimental. Neste caso, vamos supor que, ao avaliar combinações, o próprio interpretador segue um procedimento.
+Um dos nossos objetivos neste capítulo é salientar os problemas que surgem ao pensarmos nos procedimentos. Neste caso, vamos supor que, ao avaliar combinações, o próprio interpretador segue um procedimento.
 
 > Para availar uma combinação, faça o seguinte:
 > >
 > > 1. Avalie a sub-expressão da combinação.
 > >
-> 2. Aplique o procedimento, que é o valor da sub-expressão mais à esquerda (o operador), aos argumentos, que são os valores das outras sub-expressões (os operandos).
+> 2. Aplique o procedimento (o valor da sub-expressão mais à esquerda - chamado operador) aos argumentos (os valores das outras sub-expressões - os operandos).
 
-Até essa regra simples ilustra alguns pontos importantes sobre processos no geral. Primeiro, observe que a primeira etapa determina que, para conseguir avaliar o processo de uma combinação, precisamos primeiro fazer o processo de avaliação em cada elemento da combinação. Assim, a regra de avaliação é de natureza *recursiva*; ou seja, ela inclui, como uma de suas etapas, a necessidade de invocar a própria regra.^[Pode parecer estranho que a regra de avaliação diga que, na primeira etapa, devemos avaliar o elemento mais à esquerda da combinação, já que neste ponto só pode existir um operador como `+` ou `*`, que representa um procedimento primitivo nativo como adição ou multiplicação. Veremos mais tarde que isso é útil para trabalhar com combinações cujos próprios operadores são expressões compostas.]
+Até essa regra simples ilustra alguns pontos importantes sobre processos no geral. Primeiro, observe que na primeira etapa precisamos primeiro fazer a avaliação _de cada elemento_ da combinação antes de avaliar a combinação em si. Isso significa que a regra de avaliação é *recursiva*; ou seja, uma de suas etapas invoca a própria regra.^[Pode parecer estranho que a regra de avaliação diga que, na primeira etapa, devemos avaliar o elemento mais à esquerda da combinação, já que neste ponto só pode existir um operador como `+` ou `*`, que representa um procedimento primitivo nativo como adição ou multiplicação. Veremos mais tarde que isso é útil para trabalhar com combinações cujos próprios operadores são expressões compostas.]
 
-Repare como a ideia de recursão pode ser usada de forma sucinta para expressar o que seria de outra forma visto, no caso de combinações aninhadas em profundidade, como um processo meio complicado. Por exemplo, a avaliação de
+Repare como a ideia de recursão pode ser usada de forma sucinta para expressar o que seria de outra forma visto como um processo meio complicado, como seria no caso de combinações com vários aninhamentos dentro de outros aninhamentos. Por exemplo, a expressão a seguir
 
 ``` {.scheme}
 (* (+ 2 (* 4 6)) (+ 3 5 7))
 ```
 
-exige que a regra de avaliação seja aplicada em quatro combinações diferentes. Podemos criar uma imagem desse processo ao represnetar a combinação na forma de uma uma árvore, como mostra a [Figura 1.1](#Figure-1_002e1). Cada combinação é representada por um nó com ramos correspondentes ao operador e os operandos que surgem dele. Os nós terminais (ou seja, nós dos quais não brotam ramos) representam operadores ou números. Vendo a avaliação na árvore, podemos imaginar que os valores dos operandos fluem de baixo para cima, começando dos nós terminais e a seguir, fazendo combinações em níveis cada vez mais acima. No geral, veremos que essa recursão é uma técnica muito poderosa para lidar com objetos hierárquicos em forma de árvore. Na verdade, a regra de avaliação com “valores que fluem de baixo para cima” é um exemplo de um tipo geral de processo conhecido como *acumulação de árvores*.
+aplica a regra de avaliação em quatro combinações diferentes. Podemos criar uma imagem desse processo ao represnetar a combinação na forma de uma uma árvore, como mostra a [Figura 1.1](#Figure-1_002e1). Cada combinação é representada por um nó com ramos correspondentes ao operador e os operandos que surgem dele. Os nós terminais (ou seja, nós dos quais não brotam ramos) representam operadores ou números. Vendo a avaliação em árvore, podemos imaginar que os valores dos operandos fluem de baixo para cima, começando nos nós terminais e fazendo combinações em níveis cada vez mais altos. No geral, veremos que essa recursão é uma técnica muito poderosa para lidar com objetos hierárquicos em forma de árvore. Na verdade, a regra de avaliação com “valores que fluem de baixo para cima” é um exemplo de um processo conhecido como *acumulação de árvores*.
 
 ![](fig/chap1/Fig1.1g.std.svg 244.56x245.52)
 **Figure 1.1:** Representação de árvore, mostrando o valor de cada subcombinação.
 
-A seguir, obseve que a aplicação repetida da primeira etapa nos traz ao ponto em que precisamos avaliar não as combinações, mas expressões primitivas como numerais, operadores nativos ou outros nomes. Lidamos com os casos primitivos estipulando que
+A seguir, obseve que quando aplicamos a primeira etapa repetidamente, chegamos ao ponto em que em vez de avaliarmos as combinações, avaliamos expressões primitivas como numerais, operadores nativos ou outros nomes. No caso de primitivos, determinamos que
 
-- os valores dos numerais são os números que lhes dão nome,
-- os valores dos operadores nativos são as sequências de instruções da máquina que executam as operações correspondentes, e
-- os valores de outros nomes são objetos associados a esses nomes no ambiente.
+- os valores dos numerais são os próprios números que lhes dão nome,
+- os valores dos operadores nativos são as sequências de instruções da máquina que executam as operações correspondentes (por exemplo, o operador `+` ativa o processo de soma), e
+- os valores dos outros nomes são os objetos que estão associados a esses nomes no ambiente.
 
-Podemos considerar que a segunda regra é um caso especial da terceira ao determinar que símbolos como `+` e `*` também estão incluídos no ambiente global, e são associados às sequências de instruções da máquina, que são seus “valores”. O principal ponto a reparar é o papel do ambiente em determinar o significado dos símbolos nas expressões. Em uma linguagem interativa como o Lisp, não faz sentido falar do valor de uma expressão como `(+ x 1)` sem especificar qualquer informação sobre o ambiente que daria significado ao símbolo `x` (ou mesmo ao símbolo `+`). Como veremos no [Capítulo 3](Chapter-3.xhtml#Chapter-3), a noção geral de que o ambiente fornece o contexto em que a avaliação acontece terá um papel importante no nosso entendimento da execução do programa.
+Podemos considerar que a segunda regra é um caso especial da terceira quando determina que símbolos como `+` e `*` também estão incluídos no ambiente global, e são associados às sequências de instruções da máquina, que são seus “valores”. O principal ponto é reparar o papel que o ambiente tem em determinar o significado dos símbolos nas expressões. Em uma linguagem interativa como o Lisp, não faz sentido falar do valor de uma expressão como `(+ x 1)` sem especificar qualquer informação sobre o ambiente que daria significado ao símbolo `x` (ou mesmo ao símbolo `+`). Como veremos no [Capítulo 3](Chapter-3.xhtml#Chapter-3), a noção geral de que o ambiente fornece o contexto em que a avaliação acontece terá um papel importante no nosso entendimento da execução do programa.
 
-Observe que a regra de avaliação dada acima não lida com definições. Por exemplo, avaliar `(define x 3)` não aplica `define` a dois arugmentos, um dos quais é o valor do símbolo `x` e de 3, já que o propósito de `define` é precisamente associar `x` a um valor (ou seja, `(define x 3)` não é uma combinação.)
+Repare que a regra de avaliação acima não tem a ver com definições. Por exemplo, `(define x 3)` não aplica `define` a dois arugmentos (o valor do símbolo `x` e 3), já que o propósito de `define` é precisamente associar `x` a um valor. Em outras palavras, `(define x 3)` não é uma combinação.
 
-Tais exceções à regra de avaliação geral são chamadas *formas especiais*. `Define` foi o único exemplo de uma forma especial que vimos até agora, mas vamos encontrar outros em breve. Cada forma especial tem sua própria regra de avaliação. Os vários tipos de expressões (cada um com sua regra de avaliação associada) criam a sintaxe da linguagem de programação. Em comparação com outras linguagens, o Lisp tem uma sintaxe simples, ou seja, a regra de avaliação para expressões pode ser descrita por uma regra geral simples junto com regras especializadas de um pequeno número de formas especiais.^[Formas sintáticas especiais que são apenas uma estrutura superficial alternativa e conveniente para coisas que podem ser escritas de maneira mais uniforme são por vezes chamadas de *açúcar sintático*, usando um termo criado por Peter Landin. Comparando com outras linguagens, programadores de Lisp via de regra preocupam-se menos com sintaxe. (Contraste isso com qualquer manual de Pascal e repare como as descrições de sintaxe ocupam um grande espaço.) Esse desdém por sintaxe se deve parte à flexibilidade do Lisp, que facilita mudar a sintaxe superficial, e parte à observação de que muitas construções sintáticas “convenientes”, que deixam a linguagem menos uniforme, acabam causando mais problemas do que benefícios quando os programas se tornam grandes e complexos. Nas palavras de Alan Perlis, “Açúcar sintático causa câncer no ponto e vírgula” (em tradução literal. O original é um trocadilho entre “semicolon”, ponto e vírgula, e “colon”, o reto).]
+Tais exceções à regra de avaliação geral são chamadas *formas especiais*. `Define` foi o único exemplo de uma forma especial que vimos até agora, mas vamos encontrar outros em breve. Cada forma especial tem sua própria regra de avaliação. Os vários tipos de expressões (cada um com sua própria regra de avaliação) criam a sintaxe das linguagens de programação. Em comparação com outras, o Lisp tem uma sintaxe simples. Em outras palavras, no Lisp, a regra de avaliação de expressões é formada por uma regra geral simples e por regras especializadas de algumas formas especiais.^[Algumas formas sintáticas especiais são apenas uma alternativa superficial e conveniente a coisas que podem ser escritas de maneira mais uniforme, e são por vezes chamadas de *açúcar sintático*, um termo criado por Peter Landin. Comparando com outras linguagens, não há tanta preocupação com sintaxe na comunidade Lisp (contraste isso com qualquer manual de Pascal e repare como as descrições de sintaxe ocupam um grande espaço).Esse desdém por sintaxe se deve parte à flexibilidade do Lisp, que facilita mudanças de sintaxe superficial, e parte à observação de que muitas construções sintáticas “convenientes”, que deixam a linguagem menos uniforme, acabam causando mais problemas do que benefícios quando os programas se tornam grandes e complexos. Nas palavras de Alan Perlis, “Açúcar sintático causa câncer no ponto e vírgula” (em tradução literal. O original é um trocadilho entre “semicolon”, ponto e vírgula, e “colon”, o reto).]
 
 ## 1.1.4 Procedimentos Compostos
 
 Identificamos no Lisp alguns dos elementos que devem aparecer em qualquer linguagem de programação poderosa:
 
-- Números e operações aritiméticas são dados e procedimentos primitivos.
+- Números e operações aritméticas são dados e procedimentos primitivos.
 - O aninhamento de combinações permite combinar operações.
 - Definições que associam nomes a valores proporcionam meios limitados de abstração.
 
