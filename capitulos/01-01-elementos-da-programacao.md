@@ -1,79 +1,94 @@
-# 1.1 The Elements of Programming
+# 1.1 Os Elementos da Programação
 
-A powerful programming language is more than just a means for instructing a computer to perform tasks. The language also serves as a framework within which we organize our ideas about processes. Thus, when we describe a language, we should pay particular attention to the means that the language provides for combining simple ideas to form more complex ideas. Every powerful language has three mechanisms for accomplishing this:
+Uma linguagem de programaçãoo poderosa é mais do que um simples meio de instruir um computador a realizar tarefas. A linguagem também serve como o enquadramento pelo qual organizamos nossas ideias sobre os processos. Assim, quando descrevemos uma linguagem, deveríamos prestar atenção especialmente às formas que a linguagem oferece de combinar ideias simples para formar ideias mais complexas. Toda linguagem poderosa tem três mecanismos para isso:
 
-- **primitive expressions**, which represent the simplest entities the language is concerned with,
-- **means of combination**, by which compound elements are built from simpler ones, and
-- **means of abstraction**, by which compound elements can be named and manipulated as units.
+- **expressões primitivas**, que representam as entidades mais simples da linguagem em questão,
+- **meios de combinação**, que criam elementos compostos a partir de elementos mais simples,
+- **meios de abstração**, que dão nome a elementos compostos e os tratam como unidades.
 
-In programming, we deal with two kinds of elements: procedures and data. (Later we will discover that they are really not so distinct.) Informally, data is “stuff” that we want to manipulate, and procedures are descriptions of the rules for manipulating the data. Thus, any powerful programming language should be able to describe primitive data and primitive procedures and should have methods for combining and abstracting procedures and data.
+Em programação, lidamos com dois tipos de elementos: procedimentos e dados (mais tarde descobriremos que eles não são tão diferentes assim). Informalmente, dados são “coisas” que queremos manipular; procedimentos são descrições das regras que manipulam os dados. Assim, qualquer linguagem de programação poderosa deveria conseguir descrever dados primitivos e procedimentos primitivos, e deriam fornecer métodos para combinar e abstrair processos e dados.
 
-In this chapter we will deal only with simple numerical data so that we can focus on the rules for building procedures.^[The characterization of numbers as “simple data” is a barefaced bluff. In fact, the treatment of numbers is one of the trickiest and most confusing aspects of any programming language. Some typical issues involved are these: Some computer systems distinguish *integers*, such as 2, from *real numbers*, such as 2.71. Is the real number 2.00 different from the integer 2? Are the arithmetic operations used for integers the same as the operations used for real numbers? Does 6 divided by 2 produce 3, or 3.0? How large a number can we represent? How many decimal places of accuracy can we represent? Is the range of integers the same as the range of real numbers? Above and beyond these questions, of course, lies a collection of issues concerning roundoff and truncation errors—the entire science of numerical analysis. Since our focus in this book is on large-scale program design rather than on numerical techniques, we are going to ignore these problems. The numerical examples in this chapter will exhibit the usual roundoff behavior that one observes when using arithmetic operations that preserve a limited number of decimal places of accuracy in noninteger operations.] In later chapters we will see that these same rules allow us to build procedures to manipulate compound data as well.
+Neste capítulo, vamos lidar apenas com dados numéricos simples para nos focarmos nas regras que constroem os procedimentos.^[Chamar números de “dados simples” é um bluff descarado. Na verdade, a forma de lidar com números é um dos aspectos mais difíceis e confusos em qualquer linguagem de programação. Alguns dos problemas típicos são: alguns sistemas de computador fazem distinção entre *números inteiros*, como 2, e *números reais*, como  2,71. O número real 2,00 é diferente do número inteiro 2? As operações aritiméticas usadas em números inteiros são iguais às operações usadas em números reais? A divisão de 6 por 2 resulta em 3 ou em 3,0? Quão grandes podem ser os números representados? Com quantas casas decimais de precisão podemos representar os números? O intervalo de números inteiros é o mesmo que o intervalo de números reais? Além de todas essas questões, claro, há um conjunto de problemas relacionados a erros de truncamento e arredondamento — toda a ciência de análise numérica. Como o foco deste livro é o design de programas de larga escala, e não técnicas numéricas, vamos ignorar esses problemas. Os exemplos numéricos neste capítulo seguirão o comportamento normal de arredondamento usado em operações aritiméticas que mantêm um número limitado de casas decimais de precisão em operações de números não naturais.] Em capítulos posteriores, veremos que essas mesmas regras nos permitem construir procedimentos para manipular dados compostos também.
 
+## 1.1.1 Expressões
 
-## 1.1.1 Expressions
+Uma maneira fácil de começar a programar é examinar algumas interações típicas com um interpretador do dialeto Scheme do Lisp. Imagine que você está em frente ao terminal de um computador. Você digita uma *expressão* e o interpretador responde, exibindo o resultado da *avaliação* daquela expressão.
 
-One easy way to get started at programming is to examine some typical interactions with an interpreter for the Scheme dialect of Lisp. Imagine that you are sitting at a computer terminal. You type an *expression*, and the interpreter responds by displaying the result of its *evaluating* that expression.
-
-One kind of primitive expression you might type is a number. (More precisely, the expression that you type consists of the numerals that represent the number in base 10.) If you present Lisp with a number
-
-``` {.scheme}
-486
-```
-
-the interpreter will respond by printing^[Throughout this book, when we wish to emphasize the distinction between the input typed by the user and the response printed by the interpreter, we will show the latter in slanted characters.]
+Um tipo de expressão primitiva que você pode digitar é um número (mais precisamente, a expressão que você digita consiste em numerais que representam números decimais). Se você der ao Lisp o número
 
 ``` {.scheme}
 486
 ```
 
-Expressions representing numbers may be combined with an expression representing a primitive procedure (such as `+` or `*`) to form a compound expression that represents the application of the procedure to those numbers. For example:
+o interpretador responderá exibindo^[Ao longo deste livro, fazemos a distinção entre o input humano e a resposta do interpretador mostrando a esta última em itálico.]
+
+*486*
+
+Expressões que representam números podem ser combinadas com expressões que representam um procedimento primitivo (por examplo, `+` ou `*`) para formar uma expressão composta que representa a aplicação de tal procedimento a esses números. Por exemplo:
 
 ``` {.scheme}
 (+ 137 349)
-486
-
-(- 1000 334)
-666
-
-(* 5 99)
-495
-
-(/ 10 5)
-2
-
-(+ 2.7 10)
-12.7
 ```
 
-Expressions such as these, formed by delimiting a list of expressions within parentheses in order to denote procedure application, are called *combinations*. The leftmost element in the list is called the *operator*, and the other elements are called *operands*. The value of a combination is obtained by applying the procedure specified by the operator to the *arguments* that are the values of the operands.
+_486*
 
-The convention of placing the operator to the left of the operands is known as *prefix notation*, and it may be somewhat confusing at first because it departs significantly from the customary mathematical convention. Prefix notation has several advantages, however. One of them is that it can accommodate procedures that may take an arbitrary number of arguments, as in the following examples:
+``` {.scheme}
+(- 1000 334)
+```
+
+_666*
+
+``` {.scheme}
+(* 5 99)
+```
+
+_495*
+
+``` {.scheme}
+(/ 10 5)
+```
+
+_2*
+
+``` {.scheme}
+(+ 2.7 10)
+```
+
+_12.7*
+
+Expressões como essas, formadas ao delimitar uma lista de expressões entre parênteses para significar a aplicação de um procedimento, são chamadas de *combinações*. O elemento mais à esquerda é o *operador*, e os outros elementos são os *operandos*. O valor de uma combinação é obtida ao se aplicar o procedimento determinado pelo operador aos *argumentos*, que são os valores dos operandos.
+
+A convenção de posicionar o operador à esquerda dos operandos é conhecida como *notação de prefixo*, e pode ser um pouco confuso no começo porque é significativamente diferente da convenção matemática convencional. Porém, a notação de prefixo traz várias vantagens. Uma delas é que ela pode acomodar procedimentos que recebem um número arbitrário de argumentos, como nos examplos a seguir:
 
 ``` {.scheme}
 (+ 21 35 12 7)
-75
-
-(* 25 4 12)
-1200
 ```
 
-No ambiguity can arise, because the operator is always the leftmost element and the entire combination is delimited by the parentheses.
+_75*
 
-A second advantage of prefix notation is that it extends in a straightforward way to allow combinations to be *nested*, that is, to have combinations whose elements are themselves combinations:
+``` {.scheme}
+(* 25 4 12)
+```
+
+_1200*
+
+Não há margem para ambiguidade porque o operador está sempre mais à esquerda e toda a combinação está contida entre parênteses.
+
+Outra vantagem da notação de prefixo é que ela pode ser ampliada de forma clara para permitir que as combições sejam *aninhadas*, ou seja, as próprias combinações podem ter elementos que sejam outras combinações:
 
 ``` {.scheme}
 (+ (* 3 5) (- 10 6))
-19
 ```
 
-There is no limit (in principle) to the depth of such nesting and to the overall complexity of the expressions that the Lisp interpreter can evaluate. It is we humans who get confused by still relatively simple expressions such as
+_19*
+
+Em princípio, não há limite para o nível de aninhamento nem para a complexidade geral das expressões que o interpretador do Lisp avalia. Somos nós, humanos, que ficamos confusos com expressões ainda relativamente simples, como
 
 ``` {.scheme}
 (+ (* 3 (+ (* 2 4) (+ 3 5))) (+ (- 10 7) 6))
 ```
 
-which the interpreter would readily evaluate to be 57. We can help ourselves by writing such an expression in the form
+que o interpretador rapidamente avaliaria como 57. Para facilitar a nossa vida, podemos escrever a expressão como
 
 ``` {.scheme}
 (+ (* 3
@@ -83,232 +98,242 @@ which the interpreter would readily evaluate to be 57. We can help ourselves by 
       6))
 ```
 
-following a formatting convention known as *pretty-printing*, in which each long combination is written so that the operands are aligned vertically. The resulting indentations display clearly the structure of the expression.^[Lisp systems typically provide features to aid the user in formatting expressions. Two especially useful features are one that automatically indents to the proper pretty-print position whenever a new line is started and one that highlights the matching left parenthesis whenever a right parenthesis is typed.]
+seguindo uma conveção de formatação chamada *pretty-printing*, em que cada combinação longa alinha os operandos verticalmente. O recuo resultante mostra claramente a estrutura da expressão.^[Sistemas Lisp tipicamente oferecem recursos para ajudar na formatação de expressões. Dois recursos especialmente úteis são o recuo automático que exibe a posição em *pretty-printing* quando uma nova linha é criada e o recurso que destaca o parêntese esquerdo correspondente sempre que um parêntese é digitado.]
 
-Even with complex expressions, the interpreter always operates in the same basic cycle: It reads an expression from the terminal, evaluates the expression, and prints the result. This mode of operation is often expressed by saying that the interpreter runs in a *read-eval-print loop*. Observe in particular that it is not necessary to explicitly instruct the interpreter to print the value of the expression.^[Lisp obeys the convention that every expression has a value. This convention, together with the old reputation of Lisp as an inefficient language, is the source of the quip by Alan Perlis (paraphrasing Oscar Wilde) that “Lisp programmers know the value of everything but the cost of nothing.”]
+Mesmo em expressões complexas, o interpretador sempre opera o mesmo ciclo básico: lê a expressão do terminal, avalia a expressão e exibe o resultado. Geralmente se diz, nesse modo de operação, que o interpretador é executado como *read-eval-print loop* (*loop* ler-avaliar-exibir, também conhecido como REPL). Observe em particular que não é necessário instruir o interpretador explicitamente a exibir o valor da expressão.^[O Lisp segue a convenção de que toda expressão tem um valor. Esta convenção, juntamente com a velha reputação do Lisp como uma linguagem ineficiente, é o motivo pelo qual Alan Perlis (parafraseando Oscar Wilde) fez a provocação “programadores de Lisp sabem o valor de tudo mas não sabem o preço de nada”.]
 
+## 1.1.2 Nomes e o Ambiente
 
-## 1.1.2 Naming and the Environment
+Um aspecto crítico da uma linguagem de programação são as formas de usar nomes para nos referimos a objetos computacionais. Dizemos que o nome identifica a *variável* cujo *valor* é o objeto.
 
-A critical aspect of a programming language is the means it provides for using names to refer to computational objects. We say that the name identifies a *variable* whose *value* is the object.
-
-In the Scheme dialect of Lisp, we name things with `define`. Typing
-
-``` {.scheme}
-(define size 2)
-```
-
-causes the interpreter to associate the value 2 with the name `size`.^[In this book, we do not show the interpreter’s response to evaluating definitions, since this is highly implementation-dependent.] Once the name `size` has been associated with the number 2, we can refer to the value 2 by name:
+No dialeto Scheme do Lisp, damos nome às coisas usando o termo `define`. Quando digitamos
 
 ``` {.scheme}
-size
-2
-
-(* 5 size)
-10
+(define tamanho 2)
 ```
 
-Here are further examples of the use of `define`:
+fazemos com que o interpretador associe o valor 2 ao nome `tamanho`.^[Neste livro, não mostraremos a resposta do interpretador à avaliação de definições, já que depende muito da implementação.] Depois que o nome `tamanho` é associado ao número 2, podemos então nos referir ao valor 2 pelo nome:
+
+``` {.scheme}
+tamanho
+```
+
+_2*
+
+``` {.scheme}
+(* 5 tamanho)
+```
+
+_10*
+
+Veja abaixo outros exemplos do uso de `define`:
 
 ``` {.scheme}
 (define pi 3.14159)
-(define radius 10)
+(define raio 10)
 
-(* pi (* radius radius))
-314.159
-
-(define circumference (* 2 pi radius))
-
-circumference
-62.8318
+(* pi (* raio raio))
 ```
 
-`Define` is our language’s simplest means of abstraction, for it allows us to use simple names to refer to the results of compound operations, such as the `circumference` computed above. In general, computational objects may have very complex structures, and it would be extremely inconvenient to have to remember and repeat their details each time we want to use them. Indeed, complex programs are constructed by building, step by step, computational objects of increasing complexity. The interpreter makes this step-by-step program construction particularly convenient because name-object associations can be created incrementally in successive interactions. This feature encourages the incremental development and testing of programs and is largely responsible for the fact that a Lisp program usually consists of a large number of relatively simple procedures.
+_314.159*
 
-It should be clear that the possibility of associating values with symbols and later retrieving them means that the interpreter must maintain some sort of memory that keeps track of the name-object pairs. This memory is called the *environment* (more precisely the *global environment*, since we will see later that a computation may involve a number of different environments).^[[Chapter 3](Chapter-3.xhtml#Chapter-3) will show that this notion of environment is crucial, both for understanding how the interpreter works and for implementing interpreters.]
+``` {.scheme}
+(define circunferência (* 2 pi raio))
 
+circunferência
+```
 
-## 1.1.3 Evaluating Combinations
+_62.8318*
 
-One of our goals in this chapter is to isolate issues about thinking procedurally. As a case in point, let us consider that, in evaluating combinations, the interpreter is itself following a procedure.
+`Define` é a forma de abstração mais simples da nossa linguagem, porque nos permite usar nomes simples para nos referirmos aos resultados de operações compostas, como a `circunferência` computada acima. No geral, objetos computacionais podem ter estruturas muito complexas, e seria extremamente inconveniente ter que lembrar e repetir os detalhes cada vez que os usássemos. De fato, programas complexos são construídos quando criamos, passo a passo, objetos computacionais cada vez mais complexos. O interpretador é bastante conveniente na construção do passo-a-passo do programa porque as associações nome-objeto podem ser criadas de forma incremental em iterações sucessivas. Essa característica encoraja o desenvolvimento e o teste incrementais de programas e é em grande parte responsável pelo fato de que um programa Lisp geralmente é formado por um grande número de procedimentos relativamente simples.
 
-> To evaluate a combination, do the following:
-> > 1.  Evaluate the subexpressions of the combination.
-> 2.  Apply the procedure that is the value of the leftmost subexpression (the operator) to the arguments that are the values of the other subexpressions (the operands).
+Deveria estar claro que a possibilidade de associar valores a símbolos e depois recuperá-los significa que o interpretdor deve manter alguma tipo de memória que rastreia os pares nome-objeto. Essa memória é chamada de  *ambiente* (mais precisamente, o *ambiente global*, já que veremos mais tarde que uma computação pode envolver diversos ambientes).^[No [capítulo 3](03-00-modularidade-objetos-estado.md) mostraremos que esta notação de ambiente é crucial, tanto para compreender como o interpretador funciona quanto para implementar interpretadores.]
 
-Even this simple rule illustrates some important points about processes in general. First, observe that the first step dictates that in order to accomplish the evaluation process for a combination we must first perform the evaluation process on each element of the combination. Thus, the evaluation rule is *recursive* in nature; that is, it includes, as one of its steps, the need to invoke the rule itself.^[It may seem strange that the evaluation rule says, as part of the first step, that we should evaluate the leftmost element of a combination, since at this point that can only be an operator such as `+` or `*` representing a built-in primitive procedure such as addition or multiplication. We will see later that it is useful to be able to work with combinations whose operators are themselves compound expressions.]
+## 1.1.3 Avaliação de Combinações
 
-Notice how succinctly the idea of recursion can be used to express what, in the case of a deeply nested combination, would otherwise be viewed as a rather complicated process. For example, evaluating
+Um dos nossos objetivos neste capítulo é isolar problemas sobre o pensamento procedimental. Neste caso, vamos supor que, ao avaliar combinações, o próprio interpretador segue um procedimento.
+
+> Para availar uma combinação, faça o seguinte:
+> >
+> > 1. Avalie a sub-expressão da combinação.
+> >
+> 2. Aplique o procedimento, que é o valor da sub-expressão mais à esquerda (o operador), aos argumentos, que são os valores das outras sub-expressões (os operandos).
+
+Até essa regra simples ilustra alguns pontos importantes sobre processos no geral. Primeiro, observe que a primeira etapa determina que, para conseguir avaliar o processo de uma combinação, precisamos primeiro fazer o processo de avaliação em cada elemento da combinação. Assim, a regra de avaliação é de natureza *recursiva*; ou seja, ela inclui, como uma de suas etapas, a necessidade de invocar a própria regra.^[Pode parecer estranho que a regra de avaliação diga que, na primeira etapa, devemos avaliar o elemento mais à esquerda da combinação, já que neste ponto só pode existir um operador como `+` ou `*`, que representa um procedimento primitivo nativo como adição ou multiplicação. Veremos mais tarde que isso é útil para trabalhar com combinações cujos próprios operadores são expressões compostas.]
+
+Repare como a ideia de recursão pode ser usada de forma sucinta para expressar o que seria de outra forma visto, no caso de combinações aninhadas em profundidade, como um processo meio complicado. Por exemplo, a avaliação de
 
 ``` {.scheme}
 (* (+ 2 (* 4 6)) (+ 3 5 7))
 ```
 
-requires that the evaluation rule be applied to four different combinations. We can obtain a picture of this process by representing the combination in the form of a tree, as shown in [Figure 1.1](#Figure-1_002e1). Each combination is represented by a node with branches corresponding to the operator and the operands of the combination stemming from it. The terminal nodes (that is, nodes with no branches stemming from them) represent either operators or numbers. Viewing evaluation in terms of the tree, we can imagine that the values of the operands percolate upward, starting from the terminal nodes and then combining at higher and higher levels. In general, we shall see that recursion is a very powerful technique for dealing with hierarchical, treelike objects. In fact, the “percolate values upward” form of the evaluation rule is an example of a general kind of process known as *tree accumulation*.
+exige que a regra de avaliação seja aplicada em quatro combinações diferentes. Podemos criar uma imagem desse processo ao represnetar a combinação na forma de uma uma árvore, como mostra a [Figura 1.1](#Figure-1_002e1). Cada combinação é representada por um nó com ramos correspondentes ao operador e os operandos que surgem dele. Os nós terminais (ou seja, nós dos quais não brotam ramos) representam operadores ou números. Vendo a avaliação na árvore, podemos imaginar que os valores dos operandos fluem de baixo para cima, começando dos nós terminais e a seguir, fazendo combinações em níveis cada vez mais acima. No geral, veremos que essa recursão é uma técnica muito poderosa para lidar com objetos hierárquicos em forma de árvore. Na verdade, a regra de avaliação com “valores que fluem de baixo para cima” é um exemplo de um tipo geral de processo conhecido como *acumulação de árvores*.
 
 ![](fig/chap1/Fig1.1g.std.svg 244.56x245.52)
-**Figure 1.1:** Tree representation, showing the value of each subcombination.
+**Figure 1.1:** Representação de árvore, mostrando o valor de cada subcombinação.
 
-Next, observe that the repeated application of the first step brings us to the point where we need to evaluate, not combinations, but primitive expressions such as numerals, built-in operators, or other names. We take care of the primitive cases by stipulating that
+A seguir, obseve que a aplicação repetida da primeira etapa nos traz ao ponto em que precisamos avaliar não as combinações, mas expressões primitivas como numerais, operadores nativos ou outros nomes. Lidamos com os casos primitivos estipulando que
 
-- the values of numerals are the numbers that they name,
-- the values of built-in operators are the machine instruction sequences that carry out the corresponding operations, and
-- the values of other names are the objects associated with those names in the environment.
+- os valores dos numerais são os números que lhes dão nome,
+- os valores dos operadores nativos são as sequências de instruções da máquina que executam as operações correspondentes, e
+- os valores de outros nomes são objetos associados a esses nomes no ambiente.
 
-We may regard the second rule as a special case of the third one by stipulating that symbols such as `+` and `*` are also included in the global environment, and are associated with the sequences of machine instructions that are their “values.” The key point to notice is the role of the environment in determining the meaning of the symbols in expressions. In an interactive language such as Lisp, it is meaningless to speak of the value of an expression such as `(+ x 1)` without specifying any information about the environment that would provide a meaning for the symbol `x` (or even for the symbol `+`). As we shall see in [Chapter 3](Chapter-3.xhtml#Chapter-3), the general notion of the environment as providing a context in which evaluation takes place will play an important role in our understanding of program execution.
+Podemos considerar que a segunda regra é um caso especial da terceira ao determinar que símbolos como `+` e `*` também estão incluídos no ambiente global, e são associados às sequências de instruções da máquina, que são seus “valores”. O principal ponto a reparar é o papel do ambiente em determinar o significado dos símbolos nas expressões. Em uma linguagem interativa como o Lisp, não faz sentido falar do valor de uma expressão como `(+ x 1)` sem especificar qualquer informação sobre o ambiente que daria significado ao símbolo `x` (ou mesmo ao símbolo `+`). Como veremos no [Capítulo 3](Chapter-3.xhtml#Chapter-3), a noção geral de que o ambiente fornece o contexto em que a avaliação acontece terá um papel importante no nosso entendimento da execução do programa.
 
-Notice that the evaluation rule given above does not handle definitions. For instance, evaluating `(define x 3)` does not apply `define` to two arguments, one of which is the value of the symbol `x` and the other of which is 3, since the purpose of the `define` is precisely to associate `x` with a value. (That is, `(define x 3)` is not a combination.)
+Observe que a regra de avaliação dada acima não lida com definições. Por exemplo, avaliar `(define x 3)` não aplica `define` a dois arugmentos, um dos quais é o valor do símbolo `x` e de 3, já que o propósito de `define` é precisamente associar `x` a um valor (ou seja, `(define x 3)` não é uma combinação.)
 
-Such exceptions to the general evaluation rule are called *special forms*. `Define` is the only example of a special form that we have seen so far, but we will meet others shortly. Each special form has its own evaluation rule. The various kinds of expressions (each with its associated evaluation rule) constitute the syntax of the programming language. In comparison with most other programming languages, Lisp has a very simple syntax; that is, the evaluation rule for expressions can be described by a simple general rule together with specialized rules for a small number of special forms.^[Special syntactic forms that are simply convenient alternative surface structures for things that can be written in more uniform ways are sometimes called *syntactic sugar*, to use a phrase coined by Peter Landin. In comparison with users of other languages, Lisp programmers, as a rule, are less concerned with matters of syntax. (By contrast, examine any Pascal manual and notice how much of it is devoted to descriptions of syntax.) This disdain for syntax is due partly to the flexibility of Lisp, which makes it easy to change surface syntax, and partly to the observation that many “convenient” syntactic constructs, which make the language less uniform, end up causing more trouble than they are worth when programs become large and complex. In the words of Alan Perlis, “Syntactic sugar causes cancer of the semicolon.”]
+Tais exceções à regra de avaliação geral são chamadas *formas especiais*. `Define` foi o único exemplo de uma forma especial que vimos até agora, mas vamos encontrar outros em breve. Cada forma especial tem sua própria regra de avaliação. Os vários tipos de expressões (cada um com sua regra de avaliação associada) criam a sintaxe da linguagem de programação. Em comparação com outras linguagens, o Lisp tem uma sintaxe simples, ou seja, a regra de avaliação para expressões pode ser descrita por uma regra geral simples junto com regras especializadas de um pequeno número de formas especiais.^[Formas sintáticas especiais que são apenas uma estrutura superficial alternativa e conveniente para coisas que podem ser escritas de maneira mais uniforme são por vezes chamadas de *açúcar sintático*, usando um termo criado por Peter Landin. Comparando com outras linguagens, programadores de Lisp via de regra preocupam-se menos com sintaxe. (Contraste isso com qualquer manual de Pascal e repare como as descrições de sintaxe ocupam um grande espaço.) Esse desdém por sintaxe se deve parte à flexibilidade do Lisp, que facilita mudar a sintaxe superficial, e parte à observação de que muitas construções sintáticas “convenientes”, que deixam a linguagem menos uniforme, acabam causando mais problemas do que benefícios quando os programas se tornam grandes e complexos. Nas palavras de Alan Perlis, “Açúcar sintático causa câncer no ponto e vírgula” (em tradução literal. O original é um trocadilho entre “semicolon”, ponto e vírgula, e “colon”, o reto).]
 
+## 1.1.4 Procedimentos Compostos
 
-## 1.1.4 Compound Procedures
+Identificamos no Lisp alguns dos elementos que devem aparecer em qualquer linguagem de programação poderosa:
 
-We have identified in Lisp some of the elements that must appear in any powerful programming language:
+- Números e operações aritiméticas são dados e procedimentos primitivos.
+- O aninhamento de combinações permite combinar operações.
+- Definições que associam nomes a valores proporcionam meios limitados de abstração.
 
-- Numbers and arithmetic operations are primitive data and procedures.
-- Nesting of combinations provides a means of combining operations.
-- Definitions that associate names with values provide a limited means of abstraction.
+Agora vamos aprender sobre *definições de procedimento*, uma técnica muito mais poderosa de abstrações em que uma operação composta pode receber um nome e referida a seguir como sendo uma unidade.
 
-Now we will learn about *procedure definitions*, a much more powerful abstraction technique by which a compound operation can be given a name and then referred to as a unit.
-
-We begin by examining how to express the idea of “squaring.” We might say, “To square something, multiply it by itself.” This is expressed in our language as
+Começaremos examinando como expressar a idea de “elevar ao quadrado”. Podemos dizer que “Para elevar ao quadradado um elemento, multiplique o elemento por si mesmo”. Em nossa linguagem, isso seria expresso como
 
 ``` {.scheme}
-(define (square x) (* x x))
+(define (quadrado x) (* x x))
 ```
 
 We can understand this in the following way:
 
 ``` {.example}
-(define (square x)    (*       x       x))
-  |      |      |      |       |       |
- To square something, multiply it by itself.
+(define (     quadrado             x      ) (*             x           x     ))
+  |               |                |         |             |           |
+ Para      elevar ao quadrado um elemento,  multiple o elemento por si mesmo.
 ```
 
-We have here a *compound procedure*, which has been given the name `square`. The procedure represents the operation of multiplying something by itself. The thing to be multiplied is given a local name, `x`, which plays the same role that a pronoun plays in natural language. Evaluating the definition creates this compound procedure and associates it with the name `square`.^[Observe that there are two different operations being combined here: we are creating the procedure, and we are giving it the name `square`. It is possible, indeed important, to be able to separate these two notions—to create procedures without naming them, and to give names to procedures that have already been created. We will see how to do this in [1.3.2](1_002e3.xhtml#g_t1_002e3_002e2).]
+Aqui temos um *procedimento composto*, que recebeu o nome de `quadrado`. O procedimento representa a operação que multiplica algo por si mesmo. A coisa a ser multiplicada recebe um nome local, `x`, que tem o mesmo papel que um pronome em uma linguagem humana. Avaliar a definição cria este procedimento composto e o associa ao nome `quadrado`.^[Observe que hã duas operações diferentes sendo combinadas aquiÇ estamos criando o procedimento, e dando-lhe o nome `quadrado`. É possível, e até importante, conseguir separar essas duas noções: a de criar procedimentos sem lhes dar algum nome, e a noção de dar nomes a procedimentos que já foram criados. Vamos ver como fazer isso na seção [1.3.2](1_002e3.xhtml#g_t1_002e3_002e2).]
 
-The general form of a procedure definition is
+A forma geral de definir um procedimento é
+
+(define (*⟨nome⟩ ⟨parâmetros formais⟩*) *⟨corpo⟩*)
+
+O *`⟨nome⟩`* é um símbolo a ser associado com a definição do procedimento no ambiente.^[Ao longo deste livro, vamos descrever a sintaxe geral das expressões usando termos em itálico cercados por colchetes (por exemplo, *`⟨nome⟩`*) para significar as “casas” na expressão que devem ser preenchidas quanto tal expressão é usada.] Os *`⟨parâmetros formais⟩`* são os nomes usados dentro do corpo do procedimento para referir aos argumentos correspondentes do procedimento. O *`⟨corpo⟩`* é uma expressão que carrega o valor da aplicação do procedimento quando os parâmetros formais são substituídos pelos verdadeiros argumentos ao qual o procedimento é aplicado.^[De forma geral, o corpo d procedimento pode ser uma sequência de expresões. Nesse caso, o interpretador avalia cada expressão por vez e retorna o valor da expressão final como o valor da aplicação do procedimento.] O *`⟨nome⟩`* e os *`⟨parâmetros formais⟩`* ficam agrupados entre parênteses, como ficariam se fossem uma chamada verdadeira ao procedimento sendo definido.
+
+Tendo definido `quadrado`, agora podemos usá-lo:
 
 ``` {.scheme}
-(define (⟨name⟩ ⟨formal parameters⟩) ⟨body⟩)
+(quadrado 21)
 ```
 
-The `⟨`name`⟩` is a symbol to be associated with the procedure definition in the environment.^[Throughout this book, we will describe the general syntax of expressions by using italic symbols delimited by angle brackets—e.g., `⟨`name`⟩`—to denote the “slots” in the expression to be filled in when such an expression is actually used.] The `⟨`formal parameters`⟩` are the names used within the body of the procedure to refer to the corresponding arguments of the procedure. The `⟨`body`⟩` is an expression that will yield the value of the procedure application when the formal parameters are replaced by the actual arguments to which the procedure is applied.^[More generally, the body of the procedure can be a sequence of expressions. In this case, the interpreter evaluates each expression in the sequence in turn and returns the value of the final expression as the value of the procedure application.] The `⟨`name`⟩` and the `⟨`formal parameters`⟩` are grouped within parentheses, just as they would be in an actual call to the procedure being defined.
-
-Having defined `square`, we can now use it:
+*441*
 
 ``` {.scheme}
-(square 21)
-441
+(quadrado (+ 2 5))
+```
 
-(square (+ 2 5))
 49
 
-(square (square 3))
+``` {.scheme}
+(quadrado (quadrado 3))
+```
+
 81
-```
 
-We can also use `square` as a building block in defining other procedures. For example, $x^{2} + y^{2}$ can be expressed as
-
-``` {.scheme}
-(+ (square x) (square y))
-```
-
-We can easily define a procedure `sum-of-squares` that, given any two numbers as arguments, produces the sum of their squares:
+Também podemos usar `quadrado` como uma peça fundamental na definição de outros procedimentos. Por exemplo, $x^{2} + y^{2}$ pode ser expresso como
 
 ``` {.scheme}
-(define (sum-of-squares x y)
-  (+ (square x) (square y)))
+(+ (quadrado x) (quadrado y))
+```
 
-(sum-of-squares 3 4)
+Podemos facilmente definir um procedimento `soma-dos-quadrados` em que, dados dois números como argumentos, producs a seguinte soma de seus quadrados:
+
+``` {.scheme}
+(define (soma-dos-quadrados x y)
+  (+ (quadrado x) (quadrado y)))
+
+(soma-dos-quadrados 3 4)
 25
 ```
 
-Now we can use `sum-of-squares` as a building block in constructing further procedures:
+Agora podemos usar `soma-dos-quadrados` como uma peça fundamental na construção de outros procedimentos:
 
 ``` {.scheme}
 (define (f a)
-  (sum-of-squares (+ a 1) (* a 2)))
+  (soma-dos-quadrados (+ a 1) (* a 2)))
 
 (f 5)
 136
 ```
 
-Compound procedures are used in exactly the same way as primitive procedures. Indeed, one could not tell by looking at the definition of `sum-of-squares` given above whether `square` was built into the interpreter, like `+` and `*`, or defined as a compound procedure.
+Procedimentos compostos são usados exatamente da mesma forma que procedimentos primitivos. Defato, não seria possível dizer a diferença entre `soma-dos-quadrados` apenas ao olhar se o `quadrado` é nativo do interpretador, como `+` e `*`, ou se foi definido como um procedimento composto.
 
+## 1.1.5 O Modelo de Substituição para Aplicação de Procedimentos
 
-## 1.1.5 The Substitution Model for Procedure Application
+Para avaliar uma combinação cujos operador nomeia um procedimento composto, o interpretador segue o mesmo processo que as combinações cujos operadores nomeiam procedimentos primitivos que descrevemos em [1.1.3](#g_t1_002e1_002e3). Isto é, o interpretador avalia os elementos da combinação e aplica o procedimento (que é o valor do operador da combinação) aos argumentos (que são os valores dos operandos da combinação).
 
-To evaluate a combination whose operator names a compound procedure, the interpreter follows much the same process as for combinations whose operators name primitive procedures, which we described in [1.1.3](#g_t1_002e1_002e3). That is, the interpreter evaluates the elements of the combination and applies the procedure (which is the value of the operator of the combination) to the arguments (which are the values of the operands of the combination).
+Podemos presumir que o mecanismo para aplicar procedimentos primitivos a argumentos é construído pelo interpretador. Para procedimentos compostos, o processo de aplicação é o seguinte:
 
-We can assume that the mechanism for applying primitive procedures to arguments is built into the interpreter. For compound procedures, the application process is as follows:
+> Para aplicar um procedimento composta a argumentos, avalie o corpo do procedimento com cada parâmetro formal substituído pelo argumento correspondente.
 
-> To apply a compound procedure to arguments, evaluate the body of the procedure with each formal parameter replaced by the corresponding argument.
-
-To illustrate this process, let’s evaluate the combination
+Para ilustrar esse processo, vamos avaliar a combinação
 
 ``` {.scheme}
 (f 5)
 ```
 
-where `f` is the procedure defined in [1.1.4](#g_t1_002e1_002e4). We begin by retrieving the body of `f`:
+onde `f` é o processo definido em [1.1.4](#g_t1_002e1_002e4). Começamos obtendo o corpo de `f`:
 
 ``` {.scheme}
-(sum-of-squares (+ a 1) (* a 2))
+(soma-dos-quadrados (+ a 1) (* a 2))
 ```
 
-Then we replace the formal parameter `a` by the argument 5:
+A seguir, substituímos o parâmetro formal `a` pelo argumento 5:
 
 ``` {.scheme}
-(sum-of-squares (+ 5 1) (* 5 2))
+(soma-dos-quadrados (+ 5 1) (* 5 2))
 ```
 
-Thus the problem reduces to the evaluation of a combination with two operands and an operator `sum-of-squares`. Evaluating this combination involves three subproblems. We must evaluate the operator to get the procedure to be applied, and we must evaluate the operands to get the arguments. Now `(+ 5 1)` produces 6 and `(* 5 2)` produces 10, so we must apply the `sum-of-squares` procedure to 6 and 10. These values are substituted for the formal parameters `x` and `y` in the body of `sum-of-squares`, reducing the expression to
+Assim, o problema se reduz à avaliação de uma combinação com dois operandos e um operador `soma-dos-quadrados`. Avaliar esta combição envolver três sub-problemas. Precisamos avaliar o operador para obter o procedimento a ser aplicado, e devemos avaliar os operandos para obter os argumentos. Agora `(+ 5 1)` produz 6 and `(* 5 2)` produz 10, portanto devemos aplicar o procedimento `soma-dos-quadrados`a 6 e 10. Esses valores são substituídos pelos parâmetros formais `x` e `y` no corpo de `soma-dos-quadrados`, reduzindo a expressão a
 
 ``` {.scheme}
-(+ (square 6) (square 10))
+(+ (quadrado 6) (quadrado 10))
 ```
 
-If we use the definition of `square`, this reduces to
+Se usarmos a definição de `quadrado`, isso reduz-se a
 
 ``` {.scheme}
 (+ (* 6 6) (* 10 10))
 ```
 
-which reduces by multiplication to
+que reduz a multiplicação a
 
 ``` {.scheme}
 (+ 36 100)
 ```
 
-and finally to
+e, por fim, a
 
 ``` {.scheme}
 136
 ```
 
-The process we have just described is called the *substitution model* for procedure application. It can be taken as a model that determines the “meaning” of procedure application, insofar as the procedures in this chapter are concerned. However, there are two points that should be stressed:
+O processo que acabamos de descrever é chamado de  *modelo de substituição* na aplicação do procedimento. Pode ser considerado um modelo que determina o “significado” da aplicação do modelo, of procedure application, no que diz respeito aos procedimentos deste capítulo. No entanto, há dois pontos a serem destacados:
 
-- The purpose of the substitution is to help us think about procedure application, not to provide a description of how the interpreter really works. Typical interpreters do not evaluate procedure applications by manipulating the text of a procedure to substitute values for the formal parameters. In practice, the “substitution” is accomplished by using a local environment for the formal parameters. We will discuss this more fully in [Chapter 3](Chapter-3.xhtml#Chapter-3) and [Chapter 4](Chapter-4.xhtml#Chapter-4) when we examine the implementation of an interpreter in detail.
-- Over the course of this book, we will present a sequence of increasingly elaborate models of how interpreters work, culminating with a complete implementation of an interpreter and compiler in [Chapter 5](Chapter-5.xhtml#Chapter-5). The substitution model is only the first of these models—a way to get started thinking formally about the evaluation process. In general, when modeling phenomena in science and engineering, we begin with simplified, incomplete models. As we examine things in greater detail, these simple models become inadequate and must be replaced by more refined models. The substitution model is no exception. In particular, when we address in [Chapter 3](Chapter-3.xhtml#Chapter-3) the use of procedures with “mutable data,” we will see that the substitution model breaks down and must be replaced by a more complicated model of procedure application.^[Despite the simplicity of the substitution idea, it turns out to be surprisingly complicated to give a rigorous mathematical definition of the substitution process. The problem arises from the possibility of confusion between the names used for the formal parameters of a procedure and the (possibly identical) names used in the expressions to which the procedure may be applied. Indeed, there is a long history of erroneous definitions of *substitution* in the literature of logic and programming semantics. See [Stoy 1977](References.xhtml#Stoy-1977) for a careful discussion of substitution.]
+- O propósito da substituição é nos ajudar a pensar sobre a aplicação do procedimento, não é prover uma descrição de como o interpretador realmente funciona. Interpretadores típicos não avaliam aplicações de procedimentos através da manipulação o texto de um procedimento para substituir os valores pelos parâmetros formais. Na prática, a “substituição” é realizada usando o ambiente local para os parâmetros formais. Vamos discutir isso de forma mais completa no [Capítulo 3](Chapter-3.xhtml#Chapter-3) e no [Capítulo 4](Chapter-4.xhtml#Chapter-4) quando examinarmos a implementação de um interpretante em detalhes.
+- Ao longo deste livro, vamos apresentar uma sequência cada vez mais elaborada de modelos de funcionamento de interpretadores, culminando com uma implementação completa de um interpretador e um compilador no [Capítulo 5](Chapter-5.xhtml#Chapter-5). O modelo de substituição é apenas o primeiro desses modelos - uma forma de começar a pensar formalmente sobre o processo de avaliação. No geral, ao modelar fenômenos em ciência e engenharia, começamos com modelos simplificados e incompletos. Ao examinar as coisas em maior detalhe, esses modelos simples se tornam inadequados e devem ser substituídos por modelos mais refinados. O modelo de substituição não é uma exceção. Em particlar, quando chegarmos no [Capítulo 3](Chapter-3.xhtml#Chapter-3), o uso de procedimentos com “dados mutáveis”, veremos que o modelo de substituição não resiste e deve ser substituído por um modelo mais complicado de aplicação de procedimentos.^[A despeito da simplicidade da ideia de substituição, é surpreendentemente complicado dar uma definição matemática rigorosa do processo de substituição. O problema vem da possibilidade de confusão entre nomes usados nps npmes usados em parâmetros formais de um procedimento e os nomes (possivelmente idênticos) usados em expressões para os quais os procedimentos podem ser aplicados. De fato, há um longo histórico de definições incorretas de *substituição* na literatura da semântica da lógica e da programação. Consulte [Stoy 1977](References.xhtml#Stoy-1977) para conhecer uma discussão cuidadosa sobre a substituição.]
 
+### Ordem Aplicativa versus Ordem Normal
 
-### Applicative order versus normal order
-
-According to the description of evaluation given in [1.1.3](#g_t1_002e1_002e3), the interpreter first evaluates the operator and operands and then applies the resulting procedure to the resulting arguments. This is not the only way to perform evaluation. An alternative evaluation model would not evaluate the operands until their values were needed. Instead it would first substitute operand expressions for parameters until it obtained an expression involving only primitive operators, and would then perform the evaluation. If we used this method, the evaluation of `(f 5)` would proceed according to the sequence of expansions
+De acordo com a descrição de avaliação dada em [1.1.3](#g_t1_002e1_002e3), o interpretante primeiro avalia o operador e os operando e depois aplica o procedimento resultante aos argumentos resultantes. Essa não é a única maneira de realizar uma avaliação. Um modelo alternativo de avaliação não avaliaria operandos até que seus valores fossem necessários. Em vez disso, iria primeiramente substituir expressões de operandos por parâmetros até obter uma expressão envolvendo apenas operadores primitivos, e então realizar a avaliação. Se usássemos esse métido, a avaliação de `(f 5)` aconteceria de acordo com a sequência de expansões
 
 ``` {.scheme}
-(sum-of-squares (+ 5 1) (* 5 2))
+(soma-dos-quadrados (+ 5 1) (* 5 2))
 
-(+ (square (+ 5 1)) 
-   (square (* 5 2)))
+(+ (quadrado (+ 5 1))
+   (quadrado (* 5 2)))
 
 (+ (* (+ 5 1) (+ 5 1)) 
    (* (* 5 2) (* 5 2)))
 ```
 
-followed by the reductions
+seguida pelas reduções
 
 ``` {.scheme}
 (+ (* 6 6) 
@@ -319,24 +344,23 @@ followed by the reductions
 136
 ```
 
-This gives the same answer as our previous evaluation model, but the process is different. In particular, the evaluations of `(+ 5 1)` and `(* 5 2)` are each performed twice here, corresponding to the reduction of the expression `(* x x)` with `x` replaced respectively by `(+ 5 1)` and `(* 5 2)`.
+Esta é a mesma resposta dada pelo modelo de avaliação anterior, mas o processo é diferente. Em particular, as avaliações de`(+ 5 1)` e `(* 5 2)` são executadas duas vezes cada neste modelo, corespondendo â redução da expressão `(* x x)` tendo `x` substituído respectivamente por `(+ 5 1)` e `(* 5 2)`.
 
-This alternative “fully expand and then reduce” evaluation method is known as *normal-order evaluation*, in contrast to the “evaluate the arguments and then apply” method that the interpreter actually uses, which is called *applicative-order evaluation*. It can be shown that, for procedure applications that can be modeled using substitution (including all the procedures in the first two chapters of this book) and that yield legitimate values, normal-order and applicative-order evaluation produce the same value. (See [Exercise 1.5](#Exercise-1_002e5) for an instance of an “illegitimate” value where normal-order and applicative-order evaluation do not give the same result.)
+O método alternativo de avaliação “expandir completamente e depois reduzir” é conhecido como  *avaliação em ordem normal*, em contraste com o método “avaliar os argumentos e depois aplicar”, que o interpretador realmente usa, que é chamado de *avaliação de applicative-order*. Pode ser demonstrado que, para alicações de procedimentos que podem ser modelados usando substituição (incliond todos os procedimentos nos primeiros dois capítulos deste livro) e que produzem valores legítimos, avaliações de ordem normal e de *applicative-order* produzem o mesmo valor. (Consulte o [Exercício 1.5](#Exercise-1_002e5) para conhecer um valor “ilegítimo” em que a avaliação em ordem normal e em  *applicative-order* não produzem o mesmo resultado.)
 
-Lisp uses applicative-order evaluation, partly because of the additional efficiency obtained from avoiding multiple evaluations of expressions such as those illustrated with `(+ 5 1)` and `(* 5 2)` above and, more significantly, because normal-order evaluation becomes much more complicated to deal with when we leave the realm of procedures that can be modeled by substitution. On the other hand, normal-order evaluation can be an extremely valuable tool, and we will investigate some of its implications in [Chapter 3](Chapter-3.xhtml#Chapter-3) and [Chapter 4](Chapter-4.xhtml#Chapter-4).^[In [Chapter 3](Chapter-3.xhtml#Chapter-3) we will introduce *stream processing*, which is a way of handling apparently “infinite” data structures by incorporating a limited form of normal-order evaluation. In [4.2](4_002e2.xhtml#g_t4_002e2) we will modify the Scheme interpreter to produce a normal-order variant of Scheme.]
+O Lisp usa a avaliação *applicative-order*, parcialmente devido à eficiência adicional obtida ao evitar múltiplas avaliações de expressões como as ilustradas em `(+ 5 1)` e `(* 5 2)` acima, e, de forma mais significativa, porque a avaliação em ordem normal se torna muito mais complicada de lidar quando deixamos o âmbito dos procedimentos que podem ser modelados por substituição. Por outro lado, a avaliação em ordem normal pode ser uma ferramenta extremamente valiosa, e investigaremos algumas de suas implicações no [Capítulo 3](Chapter-3.xhtml#Chapter-3) e no [Capítulo 4](Chapter-4.xhtml#Chapter-4).^[No [Capítulo 3](Chapter-3.xhtml#Chapter-3) vamos introduzirt  will introduce *stream processing* (processamento de fluxo), que é uma forma de lidar com estruturas de dados aparentemente “infinitas” ao incorporar uma forma limitada de avaliação de ordem normal. Na seção [4.2](4_002e2.xhtml#g_t4_002e2) vamos modificar o interpretador do Scheme para produzir uma variante de ordem normal do Scheme.]
 
+## 1.1.6 Expressões Condicionais e Predicados
 
-## 1.1.6 Conditional Expressions and Predicates
-
-The expressive power of the class of procedures that we can define at this point is very limited, because we have no way to make tests and to perform different operations depending on the result of a test. For instance, we cannot define a procedure that computes the absolute value of a number by testing whether the number is positive, negative, or zero and taking different actions in the different cases according to the rule 
+O poder expressivo da classe de procedimentos que podemos definir agora é muito limitado, porque não temos como fazer testes e executar diferentes operações dependendo do resultado de um teste. Por exemplo, não podemos definir um procedimento que computa o valor absoluto de um número testando se o número é positivo, negativo ou zero, nem executar ações nos três casos de acordo com a regra
 
 $$\left| x \right|\; = \;\left\{ \begin{array}{lll}
-x & {\;\text{if}} & {x > 0,} \\
-0 & {\;\text{if}} & {x = 0,} \\
-{- x} & {\;\text{if}} & {x < 0.} \\
+x & {\;\text{se}} & {x > 0,} \\
+0 & {\;\text{se}} & {x = 0,} \\
+{- x} & {\;\text{se}} & {x < 0.} \\
 \end{array} \right.$$
 
- This construct is called a *case analysis*, and there is a special form in Lisp for notating such a case analysis. It is called `cond` (which stands for “conditional”), and it is used as follows:
+ Esta construção é chamada *análise de caso*, e há uma forma especial no Lisp para fazer a notação de tal análise de caso. Chama-se `cond` (abreviação de “condicional”), e é usada da seguinte forma:
 
 ``` {.scheme}
 (define (abs x)
@@ -345,7 +369,7 @@ x & {\;\text{if}} & {x > 0,} \\
         ((< x 0) (- x))))
 ```
 
-The general form of a conditional expression is
+A forma geral de uma expressão condicional é
 
 ``` {.scheme}
 (cond (⟨p₁⟩ ⟨e₁⟩)
@@ -354,15 +378,15 @@ The general form of a conditional expression is
       (⟨pₙ⟩ ⟨eₙ⟩))
 ```
 
-consisting of the symbol `cond` followed by parenthesized pairs of expressions
+consistindo do símbolo `cond` seguido por pares de expressões entre parênteses
 
 ``` {.scheme}
 (⟨p⟩ ⟨e⟩)
 ```
 
-called *clauses*. The first expression in each pair is a *predicate*—that is, an expression whose value is interpreted as either true or false.^[“Interpreted as either true or false” means this: In Scheme, there are two distinguished values that are denoted by the constants `#t` and `#f`. When the interpreter checks a predicate’s value, it interprets `#f` as false. Any other value is treated as true. (Thus, providing `#t` is logically unnecessary, but it is convenient.) In this book we will use names `true` and `false`, which are associated with the values `#t` and `#f` respectively.]
+chamadas *cláusulas*. A primeira expressão em cada par é um *predicado* - ou seja, uma expressão cujo valor é interpretado como *true* (verdadeiro) ou *false* (falso).^[“Interpretado como *true* ou *false*” significa: em Scheme, há dois valores denotados pelas constantes `#t` e `#f`. Quando o interpretante verifica o valor de um predicado, ele interpreta `#f` como *false*. Qualquer outro valor é considerado *true*. (Assim, fornecer `#t` é logicamente desnecessário, mas é conveniente.) Neste livro, usaremos os termos `true` e `false`, que são asociados com os valores `#t` e `#f` respectivamente.]
 
-Conditional expressions are evaluated as follows. The predicate $\langle p_{1}\rangle$ is evaluated first. If its value is false, then $\langle p_{2}\rangle$ is evaluated. If $\langle p_{2}\rangle$’s value is also false, then $\langle p_{3}\rangle$ is evaluated. This process continues until a predicate is found whose value is true, in which case the interpreter returns the value of the corresponding *consequent expression* $\langle e\rangle$ of the clause as the value of the conditional expression. If none of the $\langle p\rangle$’s is found to be true, the value of the `cond` is undefined.
+Expressões conditionais são avaliadas da seguinte forma. The predicate $\langle p_{1}\rangle$ is evaluated first. If its value is false, then $\langle p_{2}\rangle$ is evaluated. If $\langle p_{2}\rangle$’s value is also false, then $\langle p_{3}\rangle$ is evaluated. This process continues until a predicate is found whose value is true, in which case the interpreter returns the value of the corresponding *consequent expression* $\langle e\rangle$ of the clause as the value of the conditional expression. If none of the $\langle p\rangle$’s is found to be true, the value of the `cond` is undefined.
 
 The word *predicate* is used for procedures that return true or false, as well as for expressions that evaluate to true or false. The absolute-value procedure `abs` makes use of the primitive predicates `>`, `<`, and `=`.^[`Abs` also uses the “minus” operator `-`, which, when used with a single operand, as in `(- x)`, indicates negation.] These take two numbers as arguments and test whether the first number is, respectively, greater than, less than, or equal to the second number, returning true or false accordingly.
 
@@ -431,7 +455,6 @@ or alternatively as
 
 **Exercise 1.1:** Below is a sequence of expressions. What is the result printed by the interpreter in response to each expression? Assume that the sequence is to be evaluated in the order in which it is presented.
 
-
 ``` {.scheme}
 10
 (+ 5 3 4)
@@ -455,24 +478,20 @@ or alternatively as
    (+ a 1))
 ```
 
-
-**Exercise 1.2:** Translate the following expression into prefix form: 
+**Exercise 1.2:** Translate the following expression into prefix form:
 
 $$\frac{5 + 4 + (2 - (3 - (6 + \frac{4}{5})))}{3(6 - 2)(2 - 7)}.$$
 
-**Exercise 1.3:** Define a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
+**Exercise 1.3:** Define a procedure that takes three numbers as arguments and returns the sum of the quadrados oisso reduz-se alarger numbers.
 
 **Exercise 1.4:** Observe that our model of evaluation allows for combinations whose operators are compound expressions. Use this observation to describe the behavior of the following procedure:
-
 
 ``` {.scheme}
 (define (a-plus-abs-b a b)
   ((if (> b 0) + -) a b))
 ```
 
-
 **Exercise 1.5:** Ben Bitdiddle has invented a test to determine whether the interpreter he is faced with is using applicative-order evaluation or normal-order evaluation. He defines the following two procedures:
-
 
 ``` {.scheme}
 (define (p) (p))
@@ -483,39 +502,35 @@ $$\frac{5 + 4 + (2 - (3 - (6 + \frac{4}{5})))}{3(6 - 2)(2 - 7)}.$$
       y))
 ```
 
-
 Then he evaluates the expression
-
 
 ``` {.scheme}
 (test 0 (p))
 ```
 
-
 What behavior will Ben observe with an interpreter that uses applicative-order evaluation? What behavior will he observe with an interpreter that uses normal-order evaluation? Explain your answer. (Assume that the evaluation rule for the special form `if` is the same whether the interpreter is using normal or applicative order: The predicate expression is evaluated first, and the result determines whether to evaluate the consequent or the alternative expression.)
 
-
-## 1.1.7 Example: Square Roots by Newton’s Method
+## 1.1.7 Example: quadrado Roisso reduz-se a
 
 Procedures, as introduced above, are much like ordinary mathematical functions. They specify a value that is determined by one or more parameters. But there is an important difference between mathematical functions and computer procedures. Procedures must be effective.
 
-As a case in point, consider the problem of computing square roots. We can define the square-root function as 
+As a case in point, consider the problem of computing quadrado roisso reduz-se afunction as
 
 $$\sqrt{x}\;\; = \;\;{\text{the}\;\; y}\;\;\text{such\ that}\;\;{y \geq 0}\;\;{\text{and}\;\; y^{2} = x.}$$
 
- This describes a perfectly legitimate mathematical function. We could use it to recognize whether one number is the square root of another, or to derive facts about square roots in general. On the other hand, the definition does not describe a procedure. Indeed, it tells us almost nothing about how to actually find the square root of a given number. It will not help matters to rephrase this definition in pseudo-Lisp:
+ This describes a perfectly legitimate mathematical function. We could use it to recognize whether one number is the quadrado roisso reduz-se adescribe a procedure. Indeed, it tells us almost nothing about how to actually find the quadrado roisso reduz-se awill not help matters to rephrase this definition in pseudo-Lisp:
 
 ``` {.scheme}
 (define (sqrt x)
   (the y (and (>= y 0) 
-              (= (square y) x))))
+              (= (quadrado y)isso reduz-se a
 ```
 
 This only begs the question.
 
 The contrast between function and procedure is a reflection of the general distinction between describing properties of things and describing how to do things, or, as it is sometimes referred to, the distinction between declarative knowledge and imperative knowledge. In mathematics we are usually concerned with declarative (what is) descriptions, whereas in computer science we are usually concerned with imperative (how to) descriptions.^[Declarative and imperative descriptions are intimately related, as indeed are mathematics and computer science. For instance, to say that the answer produced by a program is “correct” is to make a declarative statement about the program. There is a large amount of research aimed at establishing techniques for proving that programs are correct, and much of the technical difficulty of this subject has to do with negotiating the transition between imperative statements (from which programs are constructed) and declarative statements (which can be used to deduce things). In a related vein, an important current area in programming-language design is the exploration of so-called very high-level languages, in which one actually programs in terms of declarative statements. The idea is to make interpreters sophisticated enough so that, given “what is” knowledge specified by the programmer, they can generate “how to” knowledge automatically. This cannot be done in general, but there are important areas where progress has been made. We shall revisit this idea in [Chapter 4](Chapter-4.xhtml#Chapter-4).]
 
-How does one compute square roots? The most common way is to use Newton’s method of successive approximations, which says that whenever we have a guess $y$ for the value of the square root of a number $x$, we can perform a simple manipulation to get a better guess (one closer to the actual square root) by averaging $y$ with $x/y$.^[This square-root algorithm is actually a special case of Newton’s method, which is a general technique for finding roots of equations. The square-root algorithm itself was developed by Heron of Alexandria in the first century A.D. We will see how to express the general Newton’s method as a Lisp procedure in [1.3.4](1_002e3.xhtml#g_t1_002e3_002e4).] For example, we can compute the square root of 2 as follows. Suppose our initial guess is 1:
+How does one compute quadrado roisso reduz-se athat whenever we have a guess $y$ for the value of the quadrado roisso reduz-se ato get a better guess (one closer to the actual quadrado roisso reduz-se aaquadrado-roisso reduz-se ageneral Newton’s method as a Lisp procedure in [1.3.4](1_002e3.xhtml#g_t1_002e3_002e4).] For example, we can compute the quadrado roisso reduz-se a
 
 ``` {.example}
 Guess     Quotient      Average
@@ -531,9 +546,9 @@ Guess     Quotient      Average
 1.4142    ...           ...
 ```
 
-Continuing this process, we obtain better and better approximations to the square root.
+Continuing this process, we obtain better and better approximations to the quadrado roisso reduz-se a
 
-Now let’s formalize the process in terms of procedures. We start with a value for the radicand (the number whose square root we are trying to compute) and a value for the guess. If the guess is good enough for our purposes, we are done; if not, we must repeat the process with an improved guess. We write this basic strategy as a procedure:
+Now let’s formalize the process in terms of procedures. We start with a value for the radicand (the number whose quadrado roisso reduz-se athe process with an improved guess. We write this basic strategy as a procedure:
 
 ``` {.scheme}
 (define (sqrt-iter guess x)
@@ -556,14 +571,14 @@ where
   (/ (+ x y) 2))
 ```
 
-We also have to say what we mean by “good enough.” The following will do for illustration, but it is not really a very good test. (See [Exercise 1.7](#Exercise-1_002e7).) The idea is to improve the answer until it is close enough so that its square differs from the radicand by less than a predetermined tolerance (here 0.001):^[We will usually give predicates names ending with question marks, to help us remember that they are predicates. This is just a stylistic convention. As far as the interpreter is concerned, the question mark is just an ordinary character.]
+We also have to say what we mean by “good enough.” The following will do for illustration, but it is not really a very good test. (See [Exercise 1.7](#Exercise-1_002e7).) The idea is to improve the answer until it is close enough so that its quadrado diisso reduz-se afrom the radicand by less than a predetermined tolerance (here 0.001):^[We will usually give predicates names ending with question marks, to help us remember that they are predicates. This is just a stylistic convention. As far as the interpreter is concerned, the question mark is just an ordinary character.]
 
 ``` {.scheme}
 (define (good-enough? guess x)
-  (< (abs (- (square guess) x)) 0.001))
+  (< (abs (- (quadrado guisso reduz-se a
 ```
 
-Finally, we need a way to get started. For instance, we can always guess that the square root of any number is 1:^[Observe that we express our initial guess as 1.0 rather than 1. This would not make any difference in many Lisp implementations. MIT Scheme, however, distinguishes between exact integers and decimal values, and dividing two integers produces a rational number rather than a decimal. For example, dividing 10 by 6 yields 5/3, while dividing 10.0 by 6.0 yields 1.6666666666666667. (We will learn how to implement arithmetic on rational numbers in [2.1.1](2_002e1.xhtml#g_t2_002e1_002e1).) If we start with an initial guess of 1 in our square-root program, and $x$ is an exact integer, all subsequent values produced in the square-root computation will be rational numbers rather than decimals. Mixed operations on rational numbers and decimals always yield decimals, so starting with an initial guess of 1.0 forces all subsequent values to be decimals.]
+Finally, we need a way to get started. For instance, we can always guess that the quadrado roisso reduz-se athat we express our initial guess as 1.0 rather than 1. This would not make any difference in many Lisp implementations. MIT Scheme, however, distinguishes between exact integers and decimal values, and dividing two integers produces a rational number rather than a decimal. For example, dividing 10 by 6 yields 5/3, while dividing 10.0 by 6.0 yields 1.6666666666666667. (We will learn how to implement arithmetic on rational numbers in [2.1.1](2_002e1.xhtml#g_t2_002e1_002e1).) If we start with an initial guess of 1 in our quadrado-roisso reduz-se arational numbers rather than decimals. Mixed operations on rational numbers and decimals always yield decimals, so starting with an initial guess of 1.0 forces all subsequent values to be decimals.]
 
 ``` {.scheme}
 (define (sqrt x)
@@ -582,14 +597,13 @@ If we type these definitions to the interpreter, we can use `sqrt` just as we ca
 (sqrt (+ (sqrt 2) (sqrt 3)))
 1.7739279023207892
 
-(square (sqrt 1000))
+(quadrado (sisso reduz-se a
 1000.000369924366
 ```
 
 The `sqrt` program also illustrates that the simple procedural language we have introduced so far is sufficient for writing any purely numerical program that one could write in, say, C or Pascal. This might seem surprising, since we have not included in our language any iterative (looping) constructs that direct the computer to do something over and over again. `Sqrt-iter`, on the other hand, demonstrates how iteration can be accomplished using no special construct other than the ordinary ability to call a procedure.^[Readers who are worried about the efficiency issues involved in using procedure calls to implement iteration should note the remarks on “tail recursion” in [1.2.1](1_002e2.xhtml#g_t1_002e2_002e1).]
 
 **Exercise 1.6:** Alyssa P. Hacker doesn’t see why `if` needs to be provided as a special form. “Why can’t I just define it as an ordinary procedure in terms of `cond`?” she asks. Alyssa’s friend Eva Lu Ator claims this can indeed be done, and she defines a new version of `if`:
-
 
 ``` {.scheme}
 (define (new-if predicate 
@@ -599,9 +613,7 @@ The `sqrt` program also illustrates that the simple procedural language we have 
         (else else-clause)))
 ```
 
-
 Eva demonstrates the program for Alyssa:
-
 
 ``` {.scheme}
 (new-if (= 2 3) 0 5)
@@ -611,9 +623,7 @@ Eva demonstrates the program for Alyssa:
 0
 ```
 
-
-Delighted, Alyssa uses `new-if` to rewrite the square-root program:
-
+Delighted, Alyssa uses `new-if` to rewrite the quadrado-roisso reduz-se a
 
 ``` {.scheme}
 (define (sqrt-iter guess x)
@@ -622,35 +632,33 @@ Delighted, Alyssa uses `new-if` to rewrite the square-root program:
           (sqrt-iter (improve guess x) x)))
 ```
 
+What happens when Alyssa attempts to use this to compute quadrado roisso reduz-se a
 
-What happens when Alyssa attempts to use this to compute square roots? Explain.
+**Exercise 1.7:** The `good-enough?` test used in computing quadrado roisso reduz-se aquadrado roisso reduz-se alimited precision. This makes our test inadequate for very large numbers. Explain these statements, with examples showing how the test fails for small and large numbers. An alternative strategy for implementing `good-enough?` is to watch how `guess` changes from one iteration to the next and to stop when the change is a very small fraction of the guess. Design a quadrado-roisso reduz-se athat uses this kind of end test. Does this work better for small and large numbers?
 
-**Exercise 1.7:** The `good-enough?` test used in computing square roots will not be very effective for finding the square roots of very small numbers. Also, in real computers, arithmetic operations are almost always performed with limited precision. This makes our test inadequate for very large numbers. Explain these statements, with examples showing how the test fails for small and large numbers. An alternative strategy for implementing `good-enough?` is to watch how `guess` changes from one iteration to the next and to stop when the change is a very small fraction of the guess. Design a square-root procedure that uses this kind of end test. Does this work better for small and large numbers?
-
-**Exercise 1.8:** Newton’s method for cube roots is based on the fact that if $y$ is an approximation to the cube root of $x$, then a better approximation is given by the value 
+**Exercise 1.8:** Newton’s method for cube roots is based on the fact that if $y$ is an approximation to the cube root of $x$, then a better approximation is given by the value
 
 $$\frac{{x/y^{2}} + 2y}{3}.$$
 
- Use this formula to implement a cube-root procedure analogous to the square-root procedure. (In [1.3.4](1_002e3.xhtml#g_t1_002e3_002e4) we will see how to implement Newton’s method in general as an abstraction of these square-root and cube-root procedures.)
-
+ Use this formula to implement a cube-root procedure analogous to the quadrado-roisso reduz-se axhtml#g_t1_002e3_002e4) we will see how to implement Newton’s method in general as an abstraction of these quadrado-roisso reduz-se aand cube-root procedures.)
 
 ## 1.1.8 Procedures as Black-Box Abstractions
 
 `Sqrt` is our first example of a process defined by a set of mutually defined procedures. Notice that the definition of `sqrt-iter` is *recursive*; that is, the procedure is defined in terms of itself. The idea of being able to define a procedure in terms of itself may be disturbing; it may seem unclear how such a “circular” definition could make sense at all, much less specify a well-defined process to be carried out by a computer. This will be addressed more carefully in [1.2](1_002e2.xhtml#g_t1_002e2). But first let’s consider some other important points illustrated by the `sqrt` example.
 
-Observe that the problem of computing square roots breaks up naturally into a number of subproblems: how to tell whether a guess is good enough, how to improve a guess, and so on. Each of these tasks is accomplished by a separate procedure. The entire `sqrt` program can be viewed as a cluster of procedures (shown in [Figure 1.2](#Figure-1_002e2)) that mirrors the decomposition of the problem into subproblems.
+Observe that the problem of computing quadrado roisso reduz-se aguess is good enough, how to improve a guess, and so on. Each of these tasks is accomplished by a separate procedure. The entire `sqrt` program can be viewed as a cluster of procedures (shown in [Figure 1.2](#Figure-1_002e2)) that mirrors the decomposition of the problem into subproblems.
 
 ![](fig/chap1/Fig1.2.std.svg 419.64x187.56)
 **Figure 1.2:** Procedural decomposition of the `sqrt` program.
 
-The importance of this decomposition strategy is not simply that one is dividing the program into parts. After all, we could take any large program and divide it into parts—the first ten lines, the next ten lines, the next ten lines, and so on. Rather, it is crucial that each procedure accomplishes an identifiable task that can be used as a module in defining other procedures. For example, when we define the `good-enough?` procedure in terms of `square`, we are able to regard the `square` procedure as a “black box.” We are not at that moment concerned with *how* the procedure computes its result, only with the fact that it computes the square. The details of how the square is computed can be suppressed, to be considered at a later time. Indeed, as far as the `good-enough?` procedure is concerned, `square` is not quite a procedure but rather an abstraction of a procedure, a so-called *procedural abstraction*. At this level of abstraction, any procedure that computes the square is equally good.
+The importance of this decomposition strategy is not simply that one is dividing the program into parts. After all, we could take any large program and divide it into parts—the first ten lines, the next ten lines, the next ten lines, and so on. Rather, it is crucial that each procedure accomplishes an identifiable task that can be used as a module in defining other procedures. For example, when we define the `good-enough?` procedure in terms of `quadrado`, isso reduz-se abox.” We are not at that moment concerned with *how* the procedure computes its result, only with the fact that it computes the quadrado. Tisso reduz-se afar as the `good-enough?` procedure is concerned, `quadrado` iisso reduz-se aprocedure, a so-called *procedural abstraction*. At this level of abstraction, any procedure that computes the quadrado isisso reduz-se aequally good.
 
-Thus, considering only the values they return, the following two procedures for squaring a number should be indistinguishable. Each takes a numerical argument and produces the square of that number as the value.^[It is not even clear which of these procedures is a more efficient implementation. This depends upon the hardware available. There are machines for which the “obvious” implementation is the less efficient one. Consider a machine that has extensive tables of logarithms and antilogarithms stored in a very efficient manner.]
+Thus, considering only the values they return, the following two procedures for squaring a number should be indistinguishable. Each takes a numerical argument and produces the quadrado ofisso reduz-se aa more efficient implementation. This depends upon the hardware available. There are machines for which the “obvious” implementation is the less efficient one. Consider a machine that has extensive tables of logarithms and antilogarithms stored in a very efficient manner.]
 
 ``` {.scheme}
-(define (square x) (* x x))
+(define (quadrado x)isso reduz-se a
 
-(define (square x) 
+(define (quadrado x)isso reduz-se a
   (exp (double (log x))))
 
 (define (double x) (+ x x))
@@ -658,35 +666,33 @@ Thus, considering only the values they return, the following two procedures for 
 
 So a procedure definition should be able to suppress detail. The users of the procedure may not have written the procedure themselves, but may have obtained it from another programmer as a black box. A user should not need to know how the procedure is implemented in order to use it.
 
-
 ### Local names
 
 One detail of a procedure’s implementation that should not matter to the user of the procedure is the implementer’s choice of names for the procedure’s formal parameters. Thus, the following procedures should not be distinguishable:
 
 ``` {.scheme}
-(define (square x) (* x x))
-(define (square y) (* y y))
+(define (quadrado x)isso reduz-se a
+(define (quadrado y)isso reduz-se a
 ```
 
-This principle—that the meaning of a procedure should be independent of the parameter names used by its author—seems on the surface to be self-evident, but its consequences are profound. The simplest consequence is that the parameter names of a procedure must be local to the body of the procedure. For example, we used `square` in the definition of `good-enough?` in our square-root procedure:
+This principle—that the meaning of a procedure should be independent of the parameter names used by its author—seems on the surface to be self-evident, but its consequences are profound. The simplest consequence is that the parameter names of a procedure must be local to the body of the procedure. For example, we used `quadrado` iisso reduz-se aa
 
 ``` {.scheme}
 (define (good-enough? guess x)
-  (< (abs (- (square guess) x)) 0.001))
+  (< (abs (- (quadrado guisso reduz-se a
 ```
 
-The intention of the author of `good-enough?` is to determine if the square of the first argument is within a given tolerance of the second argument. We see that the author of `good-enough?` used the name `guess` to refer to the first argument and `x` to refer to the second argument. The argument of `square` is `guess`. If the author of `square` used `x` (as above) to refer to that argument, we see that the `x` in `good-enough?` must be a different `x` than the one in `square`. Running the procedure `square` must not affect the value of `x` that is used by `good-enough?`, because that value of `x` may be needed by `good-enough?` after `square` is done computing.
+The intention of the author of `good-enough?` is to determine if the quadrado ofisso reduz-se atolerance of the second argument. We see that the author of `good-enough?` used the name `guess` to refer to the first argument and `x` to refer to the second argument. The argument of `quadrado` iisso reduz-se aabove) to refer to that argument, we see that the `x` in `good-enough?` must be a different `x` than the one in `quadrado`. isso reduz-se amay be needed by `good-enough?` after `quadrado` iisso reduz-se a
 
-If the parameters were not local to the bodies of their respective procedures, then the parameter `x` in `square` could be confused with the parameter `x` in `good-enough?`, and the behavior of `good-enough?` would depend upon which version of `square` we used. Thus, `square` would not be the black box we desired.
+If the parameters were not local to the bodies of their respective procedures, then the parameter `x` in `quadrado` cisso reduz-se aconfused with the parameter `x` in `good-enough?`, and the behavior of `good-enough?` would depend upon which version of `quadrado` wisso reduz-se a
 
 A formal parameter of a procedure has a very special role in the procedure definition, in that it doesn’t matter what name the formal parameter has. Such a name is called a *bound variable*, and we say that the procedure definition *binds* its formal parameters. The meaning of a procedure definition is unchanged if a bound variable is consistently renamed throughout the definition.^[The concept of consistent renaming is actually subtle and difficult to define formally. Famous logicians have made embarrassing errors here.] If a variable is not bound, we say that it is *free*. The set of expressions for which a binding defines a name is called the *scope* of that name. In a procedure definition, the bound variables declared as the formal parameters of the procedure have the body of the procedure as their scope.
 
-In the definition of `good-enough?` above, `guess` and `x` are bound variables but `<`, `-`, `abs`, and `square` are free. The meaning of `good-enough?` should be independent of the names we choose for `guess` and `x` so long as they are distinct and different from `<`, `-`, `abs`, and `square`. (If we renamed `guess` to `abs` we would have introduced a bug by *capturing* the variable `abs`. It would have changed from free to bound.) The meaning of `good-enough?` is not independent of the names of its free variables, however. It surely depends upon the fact (external to this definition) that the symbol `abs` names a procedure for computing the absolute value of a number. `Good-enough?` will compute a different function if we substitute `cos` for `abs` in its definition.
-
+In the definition of `good-enough?` above, `guess` and `x` are bound variables but `<`, `-`, `abs`, and `quadrado` aisso reduz-se aThe meaning of `good-enough?` should be independent of the names we choose for `guess` and `x` so long as they are distinct and different from `<`, `-`, `abs`, and `quadrado`. isso reduz-se avariable `abs`. It would have changed from free to bound.) The meaning of `good-enough?` is not independent of the names of its free variables, however. It surely depends upon the fact (external to this definition) that the symbol `abs` names a procedure for computing the absolute value of a number. `Good-enough?` will compute a different function if we substitute `cos` for `abs` in its definition.
 
 ### Internal definitions and block structure
 
-We have one kind of name isolation available to us so far: The formal parameters of a procedure are local to the body of the procedure. The square-root program illustrates another way in which we would like to control the use of names. The existing program consists of separate procedures:
+We have one kind of name isolation available to us so far: The formal parameters of a procedure are local to the body of the procedure. The quadrado-roisso reduz-se aconsists of separate procedures:
 
 ``` {.scheme}
 (define (sqrt x) 
@@ -698,18 +704,18 @@ We have one kind of name isolation available to us so far: The formal parameters
       (sqrt-iter (improve guess x) x)))
 
 (define (good-enough? guess x)
-  (< (abs (- (square guess) x)) 0.001))
+  (< (abs (- (quadrado guisso reduz-se a
 
 (define (improve guess x)
   (average guess (/ x guess)))
 ```
 
-The problem with this program is that the only procedure that is important to users of `sqrt` is `sqrt`. The other procedures (`sqrt-iter`, `good-enough?`, and `improve`) only clutter up their minds. They may not define any other procedure called `good-enough?` as part of another program to work together with the square-root program, because `sqrt` needs it. The problem is especially severe in the construction of large systems by many separate programmers. For example, in the construction of a large library of numerical procedures, many numerical functions are computed as successive approximations and thus might have procedures named `good-enough?` and `improve` as auxiliary procedures. We would like to localize the subprocedures, hiding them inside `sqrt` so that `sqrt` could coexist with other successive approximations, each having its own private `good-enough?` procedure. To make this possible, we allow a procedure to have internal definitions that are local to that procedure. For example, in the square-root problem we can write
+The problem with this program is that the only procedure that is important to users of `sqrt` is `sqrt`. The other procedures (`sqrt-iter`, `good-enough?`, and `improve`) only clutter up their minds. They may not define any other procedure called `good-enough?` as part of another program to work together with the quadrado-roisso reduz-se ain the construction of large systems by many separate programmers. For example, in the construction of a large library of numerical procedures, many numerical functions are computed as successive approximations and thus might have procedures named `good-enough?` and `improve` as auxiliary procedures. We would like to localize the subprocedures, hiding them inside `sqrt` so that `sqrt` could coexist with other successive approximations, each having its own private `good-enough?` procedure. To make this possible, we allow a procedure to have internal definitions that are local to that procedure. For example, in the quadrado-roisso reduz-se a
 
 ``` {.scheme}
 (define (sqrt x)
   (define (good-enough? guess x)
-    (< (abs (- (square guess) x)) 0.001))
+    (< (abs (- (quadrado guisso reduz-se a
   (define (improve guess x)
     (average guess (/ x guess)))
   (define (sqrt-iter guess x)
@@ -724,7 +730,7 @@ Such nesting of definitions, called *block structure*, is basically the right so
 ``` {.scheme}
 (define (sqrt x)
   (define (good-enough? guess)
-    (< (abs (- (square guess) x)) 0.001))
+    (< (abs (- (quadrado guisso reduz-se a
   (define (improve guess)
     (average guess (/ x guess)))
   (define (sqrt-iter guess)
